@@ -1,0 +1,7 @@
+parameters:
+    bootstrap: %rootDir%/../../../vendor/autoload.php
+
+    ignoreErrors:
+        - '#Parameter \#1 \$eventsManager of method Phalcon#'
+    reportUnmatchedIgnoredErrors: false
+© 2020 GitHub, Inc.
