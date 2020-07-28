@@ -29,5 +29,5 @@ class IsUsingImplicitObjectIdsCest
     public function mvcCollectionManagerIsUsingImplicitObjectIds(IntegrationTester $I)
     {
         $I->wantToTest('Mvc\Collection\Manager - isUsingImplicitObjectIds()');
-}
+    }
 }
