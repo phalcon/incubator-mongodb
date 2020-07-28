@@ -153,7 +153,7 @@ class Collection extends AbstractInjectionAware implements
 
     /**
      * @param MessageInterface $message
-     * @return mixed|void
+     * @return CollectionInterface
      */
     public function appendMessage(MessageInterface $message): CollectionInterface
     {
