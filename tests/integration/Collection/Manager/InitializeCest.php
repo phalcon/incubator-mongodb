@@ -29,5 +29,5 @@ class InitializeCest
     public function mvcCollectionManagerInitialize(IntegrationTester $I)
     {
         $I->wantToTest('Mvc\Collection\Manager - initialize()');
-}
+    }
 }
