@@ -60,6 +60,7 @@ class Collection extends AbstractInjectionAware implements
     /**
      * @var ObjectId|mixed $_id
      */
+    //@codingStandardsIgnoreLine
     protected $_id;
 
     /**
@@ -346,7 +347,7 @@ class Collection extends AbstractInjectionAware implements
 
         if (is_object($this->_id)) {
             $objectId = $this->_id;
-        } else if ($this->collectionsManager->isUsingImplicitObjectIds($this)) {
+        } elseif ($this->collectionsManager->isUsingImplicitObjectIds($this)) {
             $objectId = new ObjectId($this->_id);
         } else {
             $objectId = $this->_id;
@@ -1375,7 +1376,7 @@ class Collection extends AbstractInjectionAware implements
         $conditions = [];
         if (isset($parameters[0])) {
             $conditions = $parameters[0];
-        } else if (isset($parameters['conditions'])) {
+        } elseif (isset($parameters['conditions'])) {
             $conditions = $parameters['conditions'];
         }
 
@@ -1445,7 +1446,7 @@ class Collection extends AbstractInjectionAware implements
         $conditions = [];
         if (isset($parameters[0])) {
             $conditions = $parameters[0];
-        } else if (isset($parameters['conditions'])) {
+        } elseif (isset($parameters['conditions'])) {
             $conditions = $parameters['conditions'];
         }
 
