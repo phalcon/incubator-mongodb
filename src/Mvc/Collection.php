@@ -232,7 +232,7 @@ class Collection extends AbstractInjectionAware implements
 
         $success = false;
         $status = $collection->insertOne($this, [
-            'w' => true
+            'w' => true,
         ]);
 
         if ($status->isAcknowledged()) {
