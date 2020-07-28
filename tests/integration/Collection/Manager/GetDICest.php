@@ -29,5 +29,5 @@ class GetDICest
     public function mvcCollectionManagerGetDI(IntegrationTester $I)
     {
         $I->wantToTest('Mvc\Collection\Manager - getDI()');
-}
+    }
 }
