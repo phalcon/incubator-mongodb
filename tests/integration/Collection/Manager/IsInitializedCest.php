@@ -29,5 +29,5 @@ class IsInitializedCest
     public function mvcCollectionManagerIsInitialized(IntegrationTester $I)
     {
         $I->wantToTest('Mvc\Collection\Manager - isInitialized()');
-}
+    }
 }

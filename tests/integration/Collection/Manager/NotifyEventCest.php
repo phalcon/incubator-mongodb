@@ -29,5 +29,5 @@ class NotifyEventCest
     public function mvcCollectionManagerNotifyEvent(IntegrationTester $I)
     {
         $I->wantToTest('Mvc\Collection\Manager - notifyEvent()');
-}
+    }
 }

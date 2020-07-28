@@ -29,5 +29,5 @@ class GetEventsManagerCest
     public function mvcCollectionManagerGetEventsManager(IntegrationTester $I)
     {
         $I->wantToTest('Mvc\Collection\Manager - getEventsManager()');
-}
+    }
 }

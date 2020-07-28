@@ -29,5 +29,5 @@ class MissingMethodCest
     public function mvcCollectionManagerMissingMethod(IntegrationTester $I)
     {
         $I->wantToTest('Mvc\Collection\Manager - missingMethod()');
-}
+    }
 }

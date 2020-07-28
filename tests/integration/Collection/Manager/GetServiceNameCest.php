@@ -29,5 +29,5 @@ class GetServiceNameCest
     public function mvcCollectionManagerGetServiceName(IntegrationTester $I)
     {
         $I->wantToTest('Mvc\Collection\Manager - getServiceName()');
-}
+    }
 }
