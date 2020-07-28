@@ -1,4 +1,6 @@
-<?php /** @noinspection PhpUndefinedClassInspection */
+<?php
+
+/** @noinspection PhpUndefinedClassInspection */
 
 /**
  * This file is part of the Phalcon Framework.
@@ -11,7 +13,7 @@
 
 declare(strict_types=1);
 
-namespace Phalcon\Incubator\Mvc\Collection;
+namespace Phalcon\Incubator\MongoDB\Mvc\Collection;
 
 use ArrayAccess;
 use JsonSerializable;

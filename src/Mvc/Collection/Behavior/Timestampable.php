@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * This file is part of the Phalcon Framework.
@@ -9,20 +9,22 @@
  * file that was distributed with this source code.
  */
 
-namespace Phalcon\Incubator\Mvc\Collection\Behavior;
+declare(strict_types=1);
+
+namespace Phalcon\Incubator\MongoDB\Mvc\Collection\Behavior;
 
 use Closure;
-use Phalcon\Incubator\Mvc\Collection\Behavior;
-use Phalcon\Incubator\Mvc\Collection\Exception;
-use Phalcon\Incubator\Mvc\CollectionInterface;
+use Phalcon\Incubator\MongoDB\Mvc\Collection\Behavior;
+use Phalcon\Incubator\MongoDB\Mvc\Collection\Exception;
+use Phalcon\Incubator\MongoDB\Mvc\CollectionInterface;
 
 /**
- * Phalcon\Incubator\Mvc\Collection\Behavior\Timestampable
+ * Phalcon\Incubator\MongoDB\Mvc\Collection\Behavior\Timestampable
  *
  * Allows to automatically update a collection’s attribute saving the
  * datetime when a record is created or updated
  *
- * @package Phalcon\Incubator\Mvc\Collection\Behavior
+ * @package Phalcon\Incubator\MongoDB\Mvc\Collection\Behavior
  */
 class Timestampable extends Behavior
 {
@@ -46,14 +48,13 @@ class Timestampable extends Behavior
         $options = $this->getOptions($type);
 
         if (is_array($options)) {
-            $value = $options['value'];
             $field = $options['field'];
             $format = $options['format'];
 
             /**
              * The field name is required in this behavior
              */
-            if (isset($field)) {
+            if (!is_string($field)) {
                 throw new Exception("The option 'field' is required");
             }
 

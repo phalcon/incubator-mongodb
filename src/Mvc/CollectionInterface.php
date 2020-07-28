@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Phalcon\Incubator\Mvc;
+namespace Phalcon\Incubator\MongoDB\Mvc;
 
 use MongoDB\BSON\ObjectId;
 use MongoDB\Database;

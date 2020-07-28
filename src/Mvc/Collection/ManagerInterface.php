@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * This file is part of the Phalcon Framework.
@@ -9,11 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Phalcon\Incubator\Mvc\Collection;
+declare(strict_types=1);
+
+namespace Phalcon\Incubator\MongoDB\Mvc\Collection;
 
 use MongoDB\Database;
 use Phalcon\Events\ManagerInterface as EventsManagerInterface;
-use Phalcon\Incubator\Mvc\CollectionInterface;
+use Phalcon\Incubator\MongoDB\Mvc\CollectionInterface;
 
 /**
  * Phalcon\Mvc\Collection\Manager

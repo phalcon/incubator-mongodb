@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * This file is part of the Phalcon Framework.
@@ -9,9 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Phalcon\Incubator\Mvc\Collection;
+declare(strict_types=1);
 
-use Phalcon\Incubator\Mvc\CollectionInterface;
+namespace Phalcon\Incubator\MongoDB\Mvc\Collection;
+
+use Phalcon\Incubator\MongoDB\Mvc\CollectionInterface;
 
 /**
  * Phalcon\Mvc\Collection\BehaviorInterface

@@ -13,12 +13,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Phalcon\Incubator;
+namespace Phalcon\Incubator\MongoDB;
 
-use DateTime;
-use Generator;
-use MongoDB\BSON\ObjectIdInterface;
-use MongoDB\BSON\UTCDateTimeInterface;
 use ReflectionClass;
 use ReflectionException;
 
@@ -46,37 +42,5 @@ function get_class_ns(object $object): ?string
         return $reflection->getShortName();
     } catch (ReflectionException $e) {
         return null;
-    }
-}
-
-/**
- * Serializer for MongoDB data to JSON format
- *
- * Cast ObjectId and UTCDateTime to string
- *
- * @param array $data
- * @param string $dateFormat By default use RFC3339
- * @return Generator
- */
-function jsonSerializeGenerator(array $data = [], ?string $dateFormat = null): Generator
-{
-    if (is_null($dateFormat)) {
-        $dateFormat = DateTime::RFC3339;
-    }
-
-    foreach ($data as $key => $value) {
-        if (is_array($value)) {
-            (yield $key => iterator_to_array(call_user_func(__FUNCTION__, $value, $dateFormat)));
-            continue;
-        } elseif (is_object($value)) {
-            if ($value instanceof ObjectIdInterface) {
-                (yield $key => (string)$value);
-                continue;
-            } elseif ($value instanceof UTCDateTimeInterface) {
-                (yield $key => (string)$value->toDateTime()->format($dateFormat));
-                continue;
-            }
-        }
-        (yield $key => $value);
     }
 }

@@ -13,7 +13,7 @@
 
 declare(strict_types=1);
 
-namespace Phalcon\Incubator\Mvc;
+namespace Phalcon\Incubator\MongoDB\Mvc;
 
 use JsonSerializable;
 use MongoDB\BSON\ObjectId;
@@ -26,9 +26,9 @@ use Phalcon\Di\AbstractInjectionAware;
 use Phalcon\Di\DiInterface;
 use Phalcon\Events\ManagerInterface as EventsManagerInterface;
 use Phalcon\Helper\Str;
-use Phalcon\Incubator\Mvc\Collection\BehaviorInterface;
-use Phalcon\Incubator\Mvc\Collection\Exception;
-use Phalcon\Incubator\Mvc\Collection\ManagerInterface;
+use Phalcon\Incubator\MongoDB\Mvc\Collection\BehaviorInterface;
+use Phalcon\Incubator\MongoDB\Mvc\Collection\Exception;
+use Phalcon\Incubator\MongoDB\Mvc\Collection\ManagerInterface;
 use Phalcon\Messages\Message;
 use Phalcon\Messages\MessageInterface;
 use Phalcon\Mvc\EntityInterface;
@@ -1516,8 +1516,6 @@ class Collection extends AbstractInjectionAware implements
         }
 
         foreach (get_object_vars($this) as $key => $value) {
-            $reserved = $this->getReservedAttributes();
-
             if (isset($dataMapped[$key])) {
                 if (is_array($whiteList) && !in_array($key, $whiteList)) {
                     continue;

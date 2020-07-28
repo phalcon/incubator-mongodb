@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Phalcon\Incubator\Mvc\Test\Integration\Collection\Behavior;
+namespace Phalcon\Incubator\MongoDB\Mvc\Test\Integration\Collection\Behavior;
 
 use IntegrationTester;
 

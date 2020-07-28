@@ -43,7 +43,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Phalcon\\Incubator\\": "src/"
+            "Phalcon\\Incubator\\MongoDB\\": "src/"
         },
         "files": [
             "src/functions.php"
@@ -51,9 +51,9 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Phalcon\\Incubator\\Mvc\\Test\\Integration\\": "tests/integration/",
-            "Phalcon\\Incubator\\Mvc\\Test\\Unit\\": "tests/unit/",
-            "Phalcon\\Incubator\\Test\\Fixtures\\": "tests/_data/fixtures/"
+            "Phalcon\\Incubator\\MongoDB\\Mvc\\Test\\Integration\\": "tests/integration/",
+            "Phalcon\\Incubator\\MongoDB\\Mvc\\Test\\Unit\\": "tests/unit/",
+            "Phalcon\\Incubator\\MongoDB\\Test\\Fixtures\\": "tests/_data/fixtures/"
         }
     },
     "minimum-stability": "dev",

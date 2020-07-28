@@ -1,21 +1,30 @@
 <?php
 
+/**
+ * This file is part of the Phalcon Framework.
+ *
+ * (c) Phalcon Team <team@phalconphp.com>
+ *
+ * For the full copyright and license information, please view the LICENSE.txt
+ * file that was distributed with this source code.
+ */
+
 declare(strict_types=1);
 
-namespace Phalcon\Incubator\Mvc\Collection\Behavior;
+namespace Phalcon\Incubator\MongoDB\Mvc\Collection\Behavior;
 
-use Phalcon\Incubator\Mvc\Collection\Behavior;
-use Phalcon\Incubator\Mvc\Collection\Exception;
-use Phalcon\Incubator\Mvc\CollectionInterface;
+use Phalcon\Incubator\MongoDB\Mvc\Collection\Behavior;
+use Phalcon\Incubator\MongoDB\Mvc\Collection\Exception;
+use Phalcon\Incubator\MongoDB\Mvc\CollectionInterface;
 use Phalcon\Mvc\EntityInterface;
 
 /**
- * Phalcon\Incubator\Mvc\Collection\Behavior\SoftDelete
+ * Phalcon\Incubator\MongoDB\Mvc\Collection\Behavior\SoftDelete
  *
  * Instead of permanently delete a record it marks the record as
  * deleted changing the value of a flag column
  *
- * @package Phalcon\Incubator\Mvc\Collection\Behavior
+ * @package Phalcon\Incubator\MongoDB\Mvc\Collection\Behavior
  */
 class SoftDelete extends Behavior
 {
@@ -51,6 +60,8 @@ class SoftDelete extends Behavior
 
             /**
              * Skip the current operation
+             *
+             * @noinspection PhpPossiblePolymorphicInvocationInspection
              */
             $collection->skipOperation(true);
 

@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * This file is part of the Phalcon Framework.
@@ -9,14 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Phalcon\Incubator\Mvc\Collection;
+declare(strict_types=1);
+
+namespace Phalcon\Incubator\MongoDB\Mvc\Collection;
 
 /**
- * Phalcon\Incubator\Mvc\Collection\Exception
+ * Phalcon\Incubator\MongoDB\Mvc\Collection\Exception
  *
- * Exceptions thrown in Phalcon\Incubator\Mvc\Collection\* classes will use this class
+ * Exceptions thrown in Phalcon\Incubator\MongoDB\Mvc\Collection\* classes will use this class
  *
- * @package Phalcon\Incubator\Mvc\Collection
+ * @package Phalcon\Incubator\MongoDB\Mvc\Collection
  */
 class Exception extends \Phalcon\Exception
 {

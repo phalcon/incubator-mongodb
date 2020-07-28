@@ -11,12 +11,12 @@
 
 declare(strict_types=1);
 
-namespace Phalcon\Incubator\Test\Fixtures\Mvc\Collections\Documents;
+namespace Phalcon\Incubator\MongoDB\Test\Fixtures\Mvc\Collections\Documents;
 
 use DateTime;
 use DateTimeInterface;
 use MongoDB\BSON\UTCDateTime;
-use Phalcon\Incubator\Mvc\Collection\Document;
+use Phalcon\Incubator\MongoDB\Mvc\Collection\Document;
 
 class RobotPart extends Document
 {

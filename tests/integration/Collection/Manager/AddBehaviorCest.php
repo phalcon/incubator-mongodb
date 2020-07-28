@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Phalcon\Incubator\Mvc\Test\Integration\Collection\Manager;
+namespace Phalcon\Incubator\MongoDB\Mvc\Test\Integration\Collection\Manager;
 
 use IntegrationTester;
 
@@ -21,7 +21,7 @@ use IntegrationTester;
 class AddBehaviorCest
 {
     /**
-     * Tests Phalcon\Mvc\Collection\Manager :: addBehavior()
+     * Tests Phalcon\Mvc\MongoDB\Collection\Manager :: addBehavior()
      *
      * @author Phalcon Team <team@phalconphp.com>
      * @since  2018-11-13

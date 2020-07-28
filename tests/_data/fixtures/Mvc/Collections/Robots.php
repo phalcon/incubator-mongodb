@@ -11,11 +11,10 @@
 
 declare(strict_types=1);
 
-namespace Phalcon\Incubator\Test\Fixtures\Mvc\Collections;
+namespace Phalcon\Incubator\MongoDB\Test\Fixtures\Mvc\Collections;
 
-use InvoMongodb\Collections\Parts\PersonPart;
-use Phalcon\Incubator\Mvc\Collection;
-use Phalcon\Incubator\Test\Fixtures\Mvc\Collections\Documents\RobotPart;
+use Phalcon\Incubator\MongoDB\Mvc\Collection;
+use Phalcon\Incubator\MongoDB\Test\Fixtures\Mvc\Collections\Documents\RobotPart;
 use Phalcon\Messages\Message;
 use Phalcon\Validation;
 use Phalcon\Validation\Validator\Numericality;

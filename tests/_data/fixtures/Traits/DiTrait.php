@@ -11,13 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Phalcon\Incubator\Test\Fixtures\Traits;
+namespace Phalcon\Incubator\MongoDB\Test\Fixtures\Traits;
 
 use MongoDB\Client;
 use Phalcon\Di;
 use Phalcon\Di\DiInterface;
 use Phalcon\Di\FactoryDefault;
-use Phalcon\Incubator\Mvc\Collection\Manager as CollectionManager;
+use Phalcon\Incubator\MongoDB\Mvc\Collection\Manager as CollectionManager;
 
 trait DiTrait
 {

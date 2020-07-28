@@ -11,12 +11,12 @@
 
 declare(strict_types=1);
 
-namespace Phalcon\Incubator\Mvc\Test\Integration\Collection;
+namespace Phalcon\Incubator\MongoDB\Mvc\Test\Integration\Collection;
 
 use IntegrationTester;
 use MongoDB\Database;
-use Phalcon\Incubator\Test\Fixtures\Mvc\Collections\Robots;
-use Phalcon\Incubator\Test\Fixtures\Traits\DiTrait;
+use Phalcon\Incubator\MongoDB\Test\Fixtures\Mvc\Collections\Robots;
+use Phalcon\Incubator\MongoDB\Test\Fixtures\Traits\DiTrait;
 
 /**
  * Class CountCest
@@ -37,7 +37,7 @@ class CountCest
         $this->setDiCollectionManager();
         $this->setDiMongo();
 
-        $this->source = (new Robots)->getSource();
+        $this->source = (new Robots())->getSource();
         $this->mongo = $this->getDi()->get('mongo');
 
         $this->mongo->selectCollection($this->source)->insertMany(

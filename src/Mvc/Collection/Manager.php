@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+/** @noinspection PhpUnused */
 
 /**
  * This file is part of the Phalcon Framework.
@@ -9,7 +11,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Phalcon\Incubator\Mvc\Collection;
+declare(strict_types=1);
+
+namespace Phalcon\Incubator\MongoDB\Mvc\Collection;
 
 use MongoDB\Database;
 use Phalcon\Di\DiInterface;
@@ -17,13 +21,13 @@ use Phalcon\Di\InjectionAwareInterface;
 use Phalcon\Events\EventsAwareInterface;
 use Phalcon\Events\ManagerInterface as EventsManagerInterface;
 use Phalcon\Helper\Str;
-use Phalcon\Incubator\Mvc\CollectionInterface;
+use Phalcon\Incubator\MongoDB\Mvc\CollectionInterface;
 
-use function Phalcon\Incubator\get_class_lower;
-use function Phalcon\Incubator\get_class_ns;
+use function Phalcon\Incubator\MongoDB\get_class_lower;
+use function Phalcon\Incubator\MongoDB\get_class_ns;
 
 /**
- * Phalcon\Incubator\Mvc\Collection\Manager
+ * Phalcon\Incubator\MongoDB\Mvc\Collection\Manager
  *
  * This components controls the initialization of collections, keeping record of relations
  * between the different collections of the application.
@@ -36,14 +40,14 @@ use function Phalcon\Incubator\get_class_ns;
  * $di->set(
  *     "collectionManager",
  *     function () {
- *         return new \Phalcon\Incubator\Mvc\Collection\Manager();
+ *         return new \Phalcon\Incubator\MongoDB\Mvc\Collection\Manager();
  *     }
  * );
  *
  * $robot = new Robots($di);
  * </code>
  *
- * @package Phalcon\Incubator\Mvc\Collection
+ * @package Phalcon\Incubator\MongoDB\Mvc\Collection
  */
 class Manager implements ManagerInterface, InjectionAwareInterface, EventsAwareInterface
 {
@@ -66,7 +70,7 @@ class Manager implements ManagerInterface, InjectionAwareInterface, EventsAwareI
     /** @var array|null $connectionServices */
     protected $connectionServices = null;
 
-    /** @var ManagerInterface[]|null $customEventsManager */
+    /** @var ManagerInterface|null $customEventsManager */
     protected $customEventsManager = null;
 
     /** @var CollectionInterface|null $lastInitialized */
@@ -300,14 +304,14 @@ class Manager implements ManagerInterface, InjectionAwareInterface, EventsAwareI
         }
 
         if (!is_object($this->container)) {
-
-            throw new Exception('A dependency injector container is required to obtain the services related to the ORM');
+            throw new Exception(
+                'A dependency injector container is required to obtain the services related to the ORM'
+            );
         }
 
         $connection = $this->container->getShared($service);
 
         if (!is_object($connection)) {
-
             throw new Exception('Invalid injected connection service');
         }
 
@@ -351,11 +355,15 @@ class Manager implements ManagerInterface, InjectionAwareInterface, EventsAwareI
         /**
          * A collection can has a specific events manager for it
          */
-        if (is_array($this->customEventsManager) && isset($this->customEventsManager[get_class_lower($collection)])) {
-            $status = $this->customEventsManager->fire("collection:$eventName", $collection);
+        if (is_array($this->customEventsManager)) {
+            $customEventsManager = $this->customEventsManager[get_class_lower($collection)];
 
-            if (!$status) {
-                return $status;
+            if (isset($customEventsManager)) {
+                $status = $customEventsManager->fire("collection:$eventName", $collection);
+
+                if (!$status) {
+                    return $status;
+                }
             }
         }
 
@@ -385,7 +393,6 @@ class Manager implements ManagerInterface, InjectionAwareInterface, EventsAwareI
                 $result = $behavior->missingMethod($collection, $eventName, $data);
 
                 if ($result !== null) {
-
                     return $result;
                 }
             }
@@ -395,7 +402,6 @@ class Manager implements ManagerInterface, InjectionAwareInterface, EventsAwareI
          * Dispatch events to the global events manager
          */
         if (is_object($this->eventsManager)) {
-
             return $this->eventsManager->fire("collection:$eventName", $collection, $data);
         }
 

@@ -11,11 +11,11 @@
 
 declare(strict_types=1);
 
-namespace Phalcon\Incubator\Mvc\Test\Integration\Collection;
+namespace Phalcon\Incubator\MongoDB\Mvc\Test\Integration\Collection;
 
 use IntegrationTester;
-use Phalcon\Incubator\Test\Fixtures\Mvc\Collections\Robots;
-use Phalcon\Incubator\Test\Fixtures\Traits\DiTrait;
+use Phalcon\Incubator\MongoDB\Test\Fixtures\Mvc\Collections\Robots;
+use Phalcon\Incubator\MongoDB\Test\Fixtures\Traits\DiTrait;
 
 /**
  * Class GetDICest

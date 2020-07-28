@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * This file is part of the Phalcon Framework.
@@ -9,16 +9,18 @@
  * file that was distributed with this source code.
  */
 
-namespace Phalcon\Incubator\Mvc\Collection;
+declare(strict_types=1);
 
-use Phalcon\Incubator\Mvc\CollectionInterface;
+namespace Phalcon\Incubator\MongoDB\Mvc\Collection;
+
+use Phalcon\Incubator\MongoDB\Mvc\CollectionInterface;
 
 /**
- * Phalcon\Incubator\Mvc\Collection\Behavior
+ * Phalcon\Incubator\MongoDB\Mvc\Collection\Behavior
  *
  * This is an optional base class for ORM behaviors
  *
- * @package Phalcon\Incubator\Mvc\Collection
+ * @package Phalcon\Incubator\MongoDB\Mvc\Collection
  */
 abstract class Behavior implements BehaviorInterface
 {
@@ -43,7 +45,6 @@ abstract class Behavior implements BehaviorInterface
     protected function getOptions(?string $eventName = null)
     {
         if ($eventName !== null) {
-
             return $this->options[$eventName] ?? null;
         }
 

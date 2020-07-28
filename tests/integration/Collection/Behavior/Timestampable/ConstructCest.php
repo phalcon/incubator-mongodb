@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Phalcon\Incubator\Mvc\Test\Integration\Collection\Behavior\Timestampable;
+namespace Phalcon\Incubator\MongoDB\Mvc\Test\Integration\Collection\Behavior\Timestampable;
 
 use IntegrationTester;
 
