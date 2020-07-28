@@ -30,5 +30,5 @@ class FireEventCest
     public function mvcCollectionFireEvent(IntegrationTester $I)
     {
         $I->wantToTest('Mvc\Collection - fireEvent()');
-}
+    }
 }
