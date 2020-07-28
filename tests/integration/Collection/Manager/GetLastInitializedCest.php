@@ -29,5 +29,5 @@ class GetLastInitializedCest
     public function mvcCollectionManagerGetLastInitialized(IntegrationTester $I)
     {
         $I->wantToTest('Mvc\Collection\Manager - getLastInitialized()');
-}
+    }
 }
