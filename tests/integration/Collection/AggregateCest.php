@@ -3,7 +3,7 @@
 /**
  * This file is part of the Phalcon Framework.
  *
- * (c) Phalcon Team <team@phalconphp.com>
+ * (c) Phalcon Team <team@phalcon.io>
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
@@ -13,10 +13,8 @@ declare(strict_types=1);
 
 namespace Phalcon\Incubator\MongoDB\Mvc\Test\Integration\Collection;
 
-use Codeception\TestInterface;
 use IntegrationTester;
 use MongoDB\Database;
-use MongoDB\Driver\Cursor;
 use Phalcon\Incubator\MongoDB\Test\Fixtures\Mvc\Collections\Robots;
 use Phalcon\Incubator\MongoDB\Test\Fixtures\Traits\DiTrait;
 
@@ -61,7 +59,7 @@ class AggregateCest
      *
      * @param IntegrationTester $I
      * @since  2018-11-13
-     * @author Phalcon Team <team@phalconphp.com>
+     * @author Phalcon Team <team@phalcon.io>
      */
     public function mvcCollectionAggregate(IntegrationTester $I)
     {

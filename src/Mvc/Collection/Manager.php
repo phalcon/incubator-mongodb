@@ -5,7 +5,7 @@
 /**
  * This file is part of the Phalcon Framework.
  *
- * (c) Phalcon Team <team@phalconphp.com>
+ * (c) Phalcon Team <team@phalcon.io>
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
@@ -303,7 +303,7 @@ class Manager implements ManagerInterface, InjectionAwareInterface, EventsAwareI
             }
         }
 
-        if (!is_object($this->container)) {
+        if ($this->container === null) {
             throw new Exception(
                 'A dependency injector container is required to obtain the services related to the ORM'
             );

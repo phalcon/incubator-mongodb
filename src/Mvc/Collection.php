@@ -5,7 +5,7 @@
 /**
  * This file is part of the Phalcon Framework.
  *
- * (c) Phalcon Team <team@phalconphp.com>
+ * (c) Phalcon Team <team@phalcon.io>
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
@@ -116,16 +116,16 @@ class Collection extends AbstractInjectionAware implements
             $container = Di::getDefault();
         }
 
-        if (!is_object($container)) {
+        if ($container === null) {
             throw new Exception(Exception::containerServiceNotFound('the services related to the ODM'));
         }
 
         $this->container = $container;
 
-        if (!is_object($collectionsManager)) {
+        if ($collectionsManager === null) {
             $collectionsManager = $container->getShared('collectionsManager');
 
-            if (!is_object($collectionsManager)) {
+            if (!$collectionsManager instanceof ManagerInterface) {
                 throw new Exception("The injected service 'collectionsManager' is not valid");
             }
         }
@@ -903,7 +903,7 @@ class Collection extends AbstractInjectionAware implements
      */
     protected function prepareCU()
     {
-        if (!is_object($this->container)) {
+        if ($this->container === null) {
             throw new Exception(Exception::containerServiceNotFound('the services related to the ODM'));
         }
 
@@ -934,7 +934,7 @@ class Collection extends AbstractInjectionAware implements
     {
         $container = Di::getDefault();
 
-        if (!is_object($container)) {
+        if ($container === null) {
             throw new Exception(Exception::containerServiceNotFound('the services related to the ODM'));
         }
 
@@ -942,7 +942,7 @@ class Collection extends AbstractInjectionAware implements
 
         $collectionsManager = $container->getShared("collectionsManager");
 
-        if (!is_object($collectionsManager)) {
+        if ($collectionsManager === null) {
             throw new Exception("The injected service 'collectionsManager' is not valid");
         }
 
@@ -1017,7 +1017,7 @@ class Collection extends AbstractInjectionAware implements
          * Obtain the default DI
          */
         $container = Di::getDefault();
-        if (!is_object($container)) {
+        if ($this->container === null) {
             throw new Exception(
                 "The dependency injector container is not valid"
             );
@@ -1249,7 +1249,7 @@ class Collection extends AbstractInjectionAware implements
          * Obtain the default DI
          */
         $container = Di::getDefault();
-        if (!is_object($container)) {
+        if ($this->container === null) {
             throw new Exception(
                 Exception::containerServiceNotFound(
                     "the services related to the ODM"
@@ -1275,7 +1275,7 @@ class Collection extends AbstractInjectionAware implements
              */
             $manager = $container->getShared("collectionManager");
 
-            if (!is_object($manager)) {
+            if ($manager === null) {
                 throw new Exception(
                     "The injected service 'collectionManager' is not valid"
                 );
