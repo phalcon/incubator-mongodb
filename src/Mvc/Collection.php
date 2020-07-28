@@ -70,7 +70,7 @@ class Collection extends AbstractInjectionAware implements
     protected $connection;
 
     /**
-     * @var DiInterface|null
+     * @var DiInterface
      */
     protected $container;
 
