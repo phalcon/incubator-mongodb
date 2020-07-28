@@ -29,5 +29,5 @@ class SetConnectionServiceCest
     public function mvcCollectionManagerSetConnectionService(IntegrationTester $I)
     {
         $I->wantToTest('Mvc\Collection\Manager - setConnectionService()');
-}
+    }
 }
