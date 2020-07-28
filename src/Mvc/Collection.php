@@ -1,7 +1,5 @@
 <?php
 
-/** @noinspection PhpUnused */
-
 /**
  * This file is part of the Phalcon Framework.
  *
@@ -172,7 +170,7 @@ class Collection extends AbstractInjectionAware implements
      */
     public static function aggregate(?array $parameters = [], ?array $options = []): array
     {
-        $className = get_called_class();
+        $className = static::class;
         /** @var CollectionInterface $collection */
         $collection = new $className();
 
@@ -348,12 +346,10 @@ class Collection extends AbstractInjectionAware implements
 
         if (is_object($this->_id)) {
             $objectId = $this->_id;
+        } else if ($this->collectionsManager->isUsingImplicitObjectIds($this)) {
+            $objectId = new ObjectId($this->_id);
         } else {
-            if ($this->collectionsManager->isUsingImplicitObjectIds($this)) {
-                $objectId = new ObjectId($this->_id);
-            } else {
-                $objectId = $this->_id;
-            }
+            $objectId = $this->_id;
         }
 
         $status = $collection->deleteOne([
@@ -482,7 +478,7 @@ class Collection extends AbstractInjectionAware implements
      * @param string $attribute
      * @param mixed $value
      */
-    public function writeAttribute(string $attribute, $value)
+    public function writeAttribute(string $attribute, $value): void
     {
         $this->$attribute = $value;
     }
@@ -689,7 +685,7 @@ class Collection extends AbstractInjectionAware implements
      */
     public static function count(array $parameters = []): int
     {
-        $className = get_called_class();
+        $className = static::class;
         /** @var self $collection */
         $collection = new $className();
         $connection = $collection->getConnection();
@@ -761,7 +757,7 @@ class Collection extends AbstractInjectionAware implements
      */
     public static function find(array $parameters = []): iterable
     {
-        $className = get_called_class();
+        $className = static::class;
         /** @var CollectionInterface $collection */
         $collection = new $className();
 
@@ -825,7 +821,7 @@ class Collection extends AbstractInjectionAware implements
      */
     public static function findFirst(array $parameters = []): ?CollectionInterface
     {
-        $className = get_called_class();
+        $className = static::class;
         /** @var CollectionInterface $collection */
         $collection = new $className();
         $connection = $collection->getConnection();
@@ -868,7 +864,7 @@ class Collection extends AbstractInjectionAware implements
                 return null;
             }
 
-            $className = get_called_class();
+            $className = static::class;
             $collection = new $className();
 
             if ($collection->getCollectionManager()->isUsingImplicitObjectIds($collection)) {
@@ -921,7 +917,7 @@ class Collection extends AbstractInjectionAware implements
     /**
      * @return array
      */
-    public function bsonSerialize()
+    public function bsonSerialize(): array
     {
         return $this->toArray();
     }
@@ -930,7 +926,7 @@ class Collection extends AbstractInjectionAware implements
      * @param array $data
      * @throws Exception
      */
-    public function bsonUnserialize(array $data)
+    public function bsonUnserialize(array $data): void
     {
         $container = Di::getDefault();
 
@@ -989,20 +985,14 @@ class Collection extends AbstractInjectionAware implements
         /**
          * Check if there is a method with the same name of the event
          */
-        if (method_exists($this, $eventName)) {
-            if ($this->$eventName() === false) {
-                return false;
-            }
+        if (method_exists($this, $eventName) && $this->$eventName() === false) {
+            return false;
         }
 
         /**
          * Send a notification to the events manager
          */
-        if ($this->collectionsManager->notifyEvent($eventName, $this) === false) {
-            return false;
-        }
-
-        return true;
+        return !($this->collectionsManager->notifyEvent($eventName, $this) === false);
     }
 
     /**
@@ -1017,7 +1007,7 @@ class Collection extends AbstractInjectionAware implements
          * Obtain the default DI
          */
         $container = Di::getDefault();
-        if ($this->container === null) {
+        if ($container === null) {
             throw new Exception(
                 "The dependency injector container is not valid"
             );
@@ -1043,7 +1033,7 @@ class Collection extends AbstractInjectionAware implements
      * @param string $connectionService
      * @return $this
      */
-    public function setConnectionService($connectionService)
+    public function setConnectionService($connectionService): self
     {
         $this->collectionsManager->setConnectionService($this, $connectionService);
 
@@ -1091,7 +1081,7 @@ class Collection extends AbstractInjectionAware implements
      *
      * @param bool $skip
      */
-    public function skipOperation(bool $skip)
+    public function skipOperation(bool $skip): void
     {
         $this->skipped = $skip;
     }
@@ -1161,7 +1151,7 @@ class Collection extends AbstractInjectionAware implements
      *
      * @param bool $useImplicitObjectIds
      */
-    protected function useImplicitObjectIds(bool $useImplicitObjectIds)
+    protected function useImplicitObjectIds(bool $useImplicitObjectIds): void
     {
         $this->collectionsManager->useImplicitObjectIds($this, $useImplicitObjectIds);
     }
@@ -1199,13 +1189,13 @@ class Collection extends AbstractInjectionAware implements
     public static function getTypeMap($base = null): array
     {
         if (is_null($base)) {
-            $base = get_called_class();
+            $base = static::class;
+        } elseif ($base instanceof Unserializable) {
+            $base = get_class($base);
         }
 
         $typeMap = [
-            "root" => is_object($base)
-                ? get_class($base)
-                : (string)$base,
+            "root" => $base,
             "document" => 'array'
         ];
 
@@ -1228,7 +1218,7 @@ class Collection extends AbstractInjectionAware implements
             return false;
         }
 
-        $eventName = $this->operationMade == self::OP_DELETE
+        $eventName = $this->operationMade === self::OP_DELETE
             ? 'notDeleted'
             : 'notSaved';
 
@@ -1243,13 +1233,13 @@ class Collection extends AbstractInjectionAware implements
      * @param string $data
      * @throws Exception
      */
-    public function unserialize($data)
+    public function unserialize($data): void
     {
         /**
          * Obtain the default DI
          */
         $container = Di::getDefault();
-        if ($this->container === null) {
+        if ($container === null) {
             throw new Exception(
                 Exception::containerServiceNotFound(
                     "the services related to the ODM"
@@ -1266,6 +1256,7 @@ class Collection extends AbstractInjectionAware implements
             $serializer = $container->getShared("serializer");
             $attributes = $serializer->unserialize($data);
         } else {
+            /** @noinspection UnserializeExploitsInspection */
             $attributes = unserialize($data);
         }
 
@@ -1307,13 +1298,11 @@ class Collection extends AbstractInjectionAware implements
             return false;
         }
 
-        if (!is_object($this->_id)) {
-            /**
-             * Check if the model use implicit ids
-             */
-            if ($this->collectionsManager->isUsingImplicitObjectIds($this)) {
-                $this->_id = new ObjectId($this->_id);
-            }
+        /**
+         * Check if the model use implicit ids
+         */
+        if (!is_object($this->_id) && $this->collectionsManager->isUsingImplicitObjectIds($this)) {
+            $this->_id = new ObjectId($this->_id);
         }
 
         /**
@@ -1354,7 +1343,7 @@ class Collection extends AbstractInjectionAware implements
         /**
          * Check if "class" clause was defined
          */
-        if (isset($className)) {
+        if (isset($parameters["class"])) {
             $className = $parameters["class"];
             $base = new $className();
 
@@ -1368,7 +1357,7 @@ class Collection extends AbstractInjectionAware implements
             $base = $collection;
         }
 
-        if ($base instanceof Collection) {
+        if ($base instanceof self) {
             $base->setDirtyState(self::DIRTY_STATE_PERSISTENT);
         }
 
@@ -1386,10 +1375,8 @@ class Collection extends AbstractInjectionAware implements
         $conditions = [];
         if (isset($parameters[0])) {
             $conditions = $parameters[0];
-        } else {
-            if (isset($parameters['conditions'])) {
-                $conditions = $parameters['conditions'];
-            }
+        } else if (isset($parameters['conditions'])) {
+            $conditions = $parameters['conditions'];
         }
 
         if (!is_array($conditions)) {
@@ -1458,10 +1445,8 @@ class Collection extends AbstractInjectionAware implements
         $conditions = [];
         if (isset($parameters[0])) {
             $conditions = $parameters[0];
-        } else {
-            if (isset($parameters['conditions'])) {
-                $conditions = $parameters['conditions'];
-            }
+        } else if (isset($parameters['conditions'])) {
+            $conditions = $parameters['conditions'];
         }
 
         return $mongoCollection->countDocuments($conditions, $parameters);
@@ -1480,6 +1465,12 @@ class Collection extends AbstractInjectionAware implements
         return true;
     }
 
+    /**
+     * @param string $property
+     * @return mixed
+     * @noinspection MissingReturnTypeInspection
+     * @noinspection MethodVisibilityInspection
+     */
     final protected function possibleGetter(string $property)
     {
         $possibleGetter = "get" . Str::camelize($property);
@@ -1517,7 +1508,7 @@ class Collection extends AbstractInjectionAware implements
 
         foreach (get_object_vars($this) as $key => $value) {
             if (isset($dataMapped[$key])) {
-                if (is_array($whiteList) && !in_array($key, $whiteList)) {
+                if (is_array($whiteList) && !in_array($key, $whiteList, true)) {
                     continue;
                 }
 

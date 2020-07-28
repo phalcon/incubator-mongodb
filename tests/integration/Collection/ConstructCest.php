@@ -42,7 +42,7 @@ class ConstructCest
     {
         $I->wantToTest('Mvc\Collection - __construct()');
 
-        $robot = new Robots;
+        $robot = new Robots();
         $I->assertInstanceOf(Robots::class, $robot);
     }
 }
