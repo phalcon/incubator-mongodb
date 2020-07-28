@@ -112,7 +112,7 @@ class Collection extends AbstractInjectionAware implements
         ?DiInterface $container = null,
         ?ManagerInterface $collectionsManager = null
     ) {
-        if (!is_object($container)) {
+        if ($container === null) {
             $container = Di::getDefault();
         }
 
