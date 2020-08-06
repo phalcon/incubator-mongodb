@@ -945,6 +945,8 @@ class Collection extends AbstractInjectionAware implements
 
         $this->collectionsManager = $collectionsManager;
 
+        $this->dirtyState = self::DIRTY_STATE_PERSISTENT;
+
         foreach ($data as $key => $value) {
             $this->writeAttribute($key, $value);
         }
@@ -1406,10 +1408,6 @@ class Collection extends AbstractInjectionAware implements
                 return null;
             }
 
-            if (method_exists($base, 'afterFetch')) {
-                $base->afterFetch();
-            }
-
             return $document;
         }
 
@@ -1417,10 +1415,6 @@ class Collection extends AbstractInjectionAware implements
          * Requesting a complete resultset
          */
         $documentsCursor = $mongoCollection->find($conditions, $parameters);
-
-        if (method_exists($base, 'afterFetch')) {
-            $base->afterFetch();
-        }
 
         return $documentsCursor->toArray();
     }

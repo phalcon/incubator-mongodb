@@ -54,6 +54,7 @@ class CreateCest
         $robot = new Robots();
         $robot->first_name = null;
         $I->assertTrue($robot->create());
+        $I->assertEquals(Robots::DIRTY_STATE_PERSISTENT, $robot->getDirtyState());
 
         $search = $this->mongo->selectCollection($this->source)->findOne(['_id' => $robot->getId()]);
         $I->assertNotNull($search);

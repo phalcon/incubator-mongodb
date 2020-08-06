@@ -44,5 +44,6 @@ class ConstructCest
 
         $robot = new Robots();
         $I->assertInstanceOf(Robots::class, $robot);
+        $I->assertEquals(Robots::DIRTY_STATE_TRANSIENT, $robot->getDirtyState());
     }
 }

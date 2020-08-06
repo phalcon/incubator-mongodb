@@ -67,6 +67,7 @@ class FindFirstCest
 
         /** @var Robots|bool $firstRobot */
         $firstRobot = Robots::findFirst();
+        $I->assertEquals(Robots::DIRTY_STATE_PERSISTENT, $firstRobot->getDirtyState());
 
         /** @var Robots|bool $robot */
         $robot = Robots::findFirst([['last_name' => 'Nobody']]);

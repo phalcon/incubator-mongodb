@@ -65,6 +65,7 @@ class UpdateCest
 
         $robot->last_name = 'X';
         $I->assertTrue($robot->update());
+        $I->assertEquals(Robots::DIRTY_STATE_PERSISTENT, $robot->getDirtyState());
 
         $updated = $this->mongo->selectCollection($this->source)->findOne(['_id' => $robot->getId()]);
         $I->assertEquals($updated['last_name'], 'X');
