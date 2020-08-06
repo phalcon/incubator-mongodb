@@ -62,6 +62,7 @@ class CloneResultCest
         $robot = Robots::findFirst();
         $clonedRobot = Robots::cloneResult($robot, []);
 
+        $I->assertEquals(Robots::DIRTY_STATE_PERSISTENT, $clonedRobot->getDirtyState());
         $I->assertEquals($robot, $clonedRobot);
     }
 

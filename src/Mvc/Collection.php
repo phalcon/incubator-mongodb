@@ -198,7 +198,15 @@ class Collection extends AbstractInjectionAware implements
      */
     public static function cloneResult(CollectionInterface $base, array $data, int $dirtyState = 0): CollectionInterface
     {
+        /**
+         * Clone the base record
+         */
         $collection = clone $base;
+
+        /**
+         * Mark the object as persistent
+         */
+        $collection->setDirtyState($dirtyState);
 
         foreach ($data as $key => $value) {
             $collection->writeAttribute($key, $value);
@@ -1358,10 +1366,6 @@ class Collection extends AbstractInjectionAware implements
             }
         } else {
             $base = $collection;
-        }
-
-        if ($base instanceof self) {
-            $base->setDirtyState(self::DIRTY_STATE_PERSISTENT);
         }
 
         $source = $collection->getSource();
