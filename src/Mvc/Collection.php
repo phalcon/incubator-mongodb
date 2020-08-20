@@ -869,7 +869,7 @@ class Collection extends AbstractInjectionAware implements
     public static function findById($id): ?CollectionInterface
     {
         if (!is_object($id)) {
-            if (!preg_match("/^[a-f\d]{24}$/i", $id)) {
+            if (!preg_match("/^[a-f\d]{24}$/i", (string)$id)) {
                 return null;
             }
 

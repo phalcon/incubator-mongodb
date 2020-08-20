@@ -71,6 +71,7 @@ class FindByIdCest
     {
         $I->wantToTest('Mvc\Collection - findById()');
 
+        $I->assertNull(Robots::findById(null));
         $I->assertNull(Robots::findById(new ObjectId()));
         $I->assertInstanceOf(Robots::class, Robots::findById($this->tmpId));
         $I->assertInstanceOf(Robots::class, Robots::findById((string)$this->tmpId));
