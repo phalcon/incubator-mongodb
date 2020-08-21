@@ -15,6 +15,7 @@ namespace Phalcon\Incubator\MongoDB\Mvc\Test\Integration\Collection;
 
 use IntegrationTester;
 use MongoDB\Database;
+use MongoDB\Driver\Cursor;
 use Phalcon\Incubator\MongoDB\Test\Fixtures\Mvc\Collections\Robots;
 use Phalcon\Incubator\MongoDB\Test\Fixtures\Traits\DiTrait;
 
@@ -67,6 +68,7 @@ class AggregateCest
 
         $options = ['typeMap' => Robots::getTypeMap()];
 
+        /** @var Cursor $robots1 */
         $robots1 = Robots::aggregate([
             [
                 '$match' => [
@@ -74,6 +76,12 @@ class AggregateCest
                 ]
             ]
         ]);
+
+        $I->assertInstanceOf(Cursor::class, $robots1);
+
+        foreach ($robots1 as $rb) {
+            $I->assertIsArray($rb);
+        }
 
         $robots2 = Robots::aggregate([
             [
@@ -83,8 +91,7 @@ class AggregateCest
             ]
         ], $options);
 
-        $I->assertNotEmpty($robots1);
-        $I->assertInstanceOf(Robots::class, $robots2[0]);
+        $I->assertInstanceOf(Robots::class, $robots2->toArray()[0]);
     }
 
     public function _after()

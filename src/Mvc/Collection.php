@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Phalcon\Incubator\MongoDB\Mvc;
 
+use ArrayIterator;
 use JsonSerializable;
 use MongoDB\BSON\ObjectId;
 use MongoDB\BSON\Serializable as BsonSerializable;
@@ -32,6 +33,7 @@ use Phalcon\Messages\MessageInterface;
 use Phalcon\Mvc\EntityInterface;
 use Phalcon\Validation\ValidationInterface;
 use Serializable;
+use Traversable;
 
 /**
  * Class Collection
@@ -166,28 +168,37 @@ class Collection extends AbstractInjectionAware implements
      *
      * @param array|null $parameters
      * @param array|null $options
-     * @return array
+     * @return Cursor|ArrayIterator
      * @throws Exception
      */
-    public static function aggregate(?array $parameters = [], ?array $options = []): array
+    public static function aggregate(array $parameters = [], array $options = []): Traversable
     {
         $className = static::class;
-        /** @var CollectionInterface $collection */
-        $collection = new $className();
 
-        $source = $collection->getSource();
+        /** @var CollectionInterface $base */
+        $base = new $className();
+        $source = $base->getSource();
+
         if (empty($source)) {
             throw new Exception("Method getSource() returns empty string");
         }
 
-        $connection = $collection->getConnection();
-        $cursorOrArrayIterator = $connection->selectCollection($source)->aggregate($parameters, $options);
-
-        if ($cursorOrArrayIterator instanceof Cursor) {
-            return $cursorOrArrayIterator->toArray();
+        /**
+         * Check if a "typeMap" clause was defined or force default
+         */
+        if (isset($options["typeMap"])) {
+            $options['typeMap'] = array_merge(
+                self::getTypeMap('array'),
+                $options["typeMap"]
+            );
+        } else {
+            $options['typeMap'] = self::getTypeMap('array');
         }
 
-        return (array)$cursorOrArrayIterator;
+        $connection = $base->getConnection();
+
+        // Driver now return a Cursor class by default for more performances.
+        return $connection->selectCollection($source)->aggregate($parameters, $options);
     }
 
     /**
@@ -761,10 +772,10 @@ class Collection extends AbstractInjectionAware implements
      * ```
      *
      * @param array $parameters
-     * @return iterable
+     * @return Cursor|Traversable
      * @throws Exception
      */
-    public static function find(array $parameters = []): iterable
+    public static function find(array $parameters = []): Traversable
     {
         $className = static::class;
         /** @var CollectionInterface $collection */
@@ -1210,7 +1221,8 @@ class Collection extends AbstractInjectionAware implements
             "document" => 'array'
         ];
 
-        if (is_array($base::$typeMap)) {
+        /** @noinspection NotOptimalIfConditionsInspection */
+        if (class_exists($base) && is_array($base::$typeMap)) {
             $typeMap = array_merge($typeMap, $base::$typeMap);
         }
 
@@ -1342,7 +1354,7 @@ class Collection extends AbstractInjectionAware implements
      * @param CollectionInterface $collection
      * @param mixed|Database $connection
      * @param bool $unique
-     * @return array|object|null
+     * @return Cursor|object|array
      * @throws Exception
      */
     protected static function getResultset(
@@ -1415,12 +1427,8 @@ class Collection extends AbstractInjectionAware implements
             return $document;
         }
 
-        /**
-         * Requesting a complete resultset
-         */
-        $documentsCursor = $mongoCollection->find($conditions, $parameters);
-
-        return $documentsCursor->toArray();
+        // Driver now return a Cursor class by default for more performances.
+        return $mongoCollection->find($conditions, $parameters);
     }
 
     /**
