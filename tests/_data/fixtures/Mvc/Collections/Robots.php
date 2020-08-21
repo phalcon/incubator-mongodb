@@ -72,7 +72,7 @@ class Robots extends Collection
      */
     public function setProtectedField($protected_field): void
     {
-        $this->protected_field = $protected_field;
+        $this->protected_field = $protected_field + 1;
     }
 
     /**

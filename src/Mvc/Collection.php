@@ -1453,7 +1453,7 @@ class Collection extends AbstractInjectionAware implements
 
     final protected function possibleSetter(string $property, $value): bool
     {
-        $possibleSetter = "set" . Str::camelize($property);
+        $possibleSetter = "set" . ucfirst(Str::camelize($property));
 
         if (!method_exists($this, $possibleSetter)) {
             return false;
@@ -1472,7 +1472,7 @@ class Collection extends AbstractInjectionAware implements
      */
     final protected function possibleGetter(string $property)
     {
-        $possibleGetter = "get" . Str::camelize($property);
+        $possibleGetter = "get" . ucfirst(Str::camelize($property));
 
         if (!method_exists($this, $possibleGetter)) {
             return $this->$property;
@@ -1511,8 +1511,8 @@ class Collection extends AbstractInjectionAware implements
                     continue;
                 }
 
-                if (!$this->possibleSetter($key, $value)) {
-                    $this->$key = $value;
+                if (!$this->possibleSetter($key, $dataMapped[$key])) {
+                    $this->$key = $dataMapped[$key];
                 }
             }
         }
