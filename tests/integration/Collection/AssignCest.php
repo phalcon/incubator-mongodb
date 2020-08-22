@@ -15,6 +15,7 @@ namespace Phalcon\Incubator\MongoDB\Mvc\Test\Integration\Collection;
 
 use IntegrationTester;
 use Phalcon\Incubator\MongoDB\Test\Fixtures\Mvc\Collections\Robots;
+use Phalcon\Incubator\MongoDB\Test\Fixtures\Mvc\Collections\SuperRobots;
 use Phalcon\Incubator\MongoDB\Test\Fixtures\Traits\DiTrait;
 
 /**
@@ -72,5 +73,16 @@ class AssignCest
 
         $I->assertEquals($robot3->first_name, $name);
         $I->assertEquals(42, $robot3->getProtectedField());
+
+        $superrb = new SuperRobots();
+        $superrb->assign([
+            'first_name' => $name,
+            'protected_field' => 44,
+            'rbsuperversion' => 54,
+        ]);
+
+        $I->assertEquals($superrb->first_name, $name);
+        $I->assertEquals($superrb->getProtectedField(), 45);
+        $I->assertEquals($superrb->rbsuperversion, 54);
     }
 }

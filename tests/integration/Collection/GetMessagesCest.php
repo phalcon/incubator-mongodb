@@ -53,7 +53,7 @@ class GetMessagesCest
         $I->wantToTest('Mvc\Collection - getMessages()');
 
         $robot = new Robots;
-        $robot->setProtectedField("bad");
+        $robot->version = -1;
 
         $I->assertFalse($robot->save());
         $I->assertNotEmpty($robot->getMessages());
