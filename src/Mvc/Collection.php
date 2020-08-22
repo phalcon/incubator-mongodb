@@ -1496,7 +1496,6 @@ class Collection extends AbstractInjectionAware implements
      * @param null $dataColumnMap
      * @param null $whiteList
      * @return $this|CollectionInterface
-     * @throws ReflectionException
      */
     public function assign(array $data, $dataColumnMap = null, $whiteList = null): CollectionInterface
     {
@@ -1517,10 +1516,20 @@ class Collection extends AbstractInjectionAware implements
         }
 
         // Use reflection to list uninitialized properties
-        $reflection = new ReflectionClass($this);
+        try {
+            $reflection = new ReflectionClass($this);
+            $reflectionProperties = $reflection->getProperties();
+        } catch (ReflectionException $e) {
+            $reflectionProperties = [];
+        }
+        $reserved = $this->getReservedAttributes();
 
-        foreach ($reflection->getProperties() as $reflectionMethod) {
+        foreach ($reflectionProperties as $reflectionMethod) {
             $key = $reflectionMethod->getName();
+
+            if (isset($reserved[$key])) {
+                continue;
+            }
 
             if (isset($dataMapped[$key])) {
                 if (is_array($whiteList) && !in_array($key, $whiteList, true)) {

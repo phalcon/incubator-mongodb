@@ -1,7 +1,5 @@
 <?php
 
-/** @noinspection PhpUndefinedClassInspection */
-
 /**
  * This file is part of the Phalcon Framework.
  *
@@ -20,7 +18,10 @@ use JsonSerializable;
 use MongoDB\BSON\Serializable;
 use MongoDB\BSON\Unserializable;
 use Phalcon\Helper\Str;
+use Phalcon\Incubator\MongoDB\Mvc\CollectionInterface;
 use Phalcon\Mvc\EntityInterface;
+use ReflectionClass;
+use ReflectionException;
 
 /**
  * Class Document
@@ -42,19 +43,68 @@ class Document implements
      *
      * @param array $data
      */
-    final public function __construct(array $data = [])
+    final public function __construct($data = null)
     {
-        foreach ($data as $key => $value) {
-            $this->offsetSet($key, $value);
-        }
-
         /**
          * This allows the developer to execute initialization stuff every time
          * an instance is created
          */
         if (method_exists($this, 'onConstruct')) {
-            $this->onConstruct();
+            $this->onConstruct($data);
         }
+
+        if (is_array($data)) {
+            $this->assign($data);
+        }
+    }
+
+    /**
+     * @param array $data
+     * @param null $dataColumnMap
+     * @param null $whiteList
+     * @return $this|CollectionInterface
+     */
+    public function assign(array $data, $dataColumnMap = null, $whiteList = null): self
+    {
+        if (is_array($dataColumnMap)) {
+            $dataMapped = [];
+
+            foreach ($data as $key => $value) {
+                if (isset($dataColumnMap[$key])) {
+                    $dataMapped[$dataColumnMap[$key]] = $value;
+                }
+            }
+        } else {
+            $dataMapped = $data;
+        }
+
+        if (count($dataMapped) === 0) {
+            return $this;
+        }
+
+        // Use reflection to list uninitialized properties
+        try {
+            $reflection = new ReflectionClass($this);
+            $reflectionProperties = $reflection->getProperties();
+        } catch (ReflectionException $e) {
+            $reflectionProperties = [];
+        }
+
+        foreach ($reflectionProperties as $reflectionMethod) {
+            $key = $reflectionMethod->getName();
+
+            if (isset($dataMapped[$key])) {
+                if (is_array($whiteList) && !in_array($key, $whiteList, true)) {
+                    continue;
+                }
+
+                if (!$this->possibleSetter($key, $dataMapped[$key])) {
+                    $this->$key = $dataMapped[$key];
+                }
+            }
+        }
+
+        return $this;
     }
 
     /**
@@ -146,7 +196,7 @@ class Document implements
      *
      * @return array
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         $data = [];
 
@@ -157,9 +207,13 @@ class Document implements
         return $data;
     }
 
+    /**
+     * @param string $property
+     * @return mixed
+     */
     final protected function possibleGetter(string $property)
     {
-        $possibleGetter = "get" . Str::camelize($property);
+        $possibleGetter = "get" . ucfirst(Str::camelize($property));
 
         if (!method_exists($this, $possibleGetter)) {
             return $this->$property;
@@ -171,15 +225,33 @@ class Document implements
     /**
      * @return array
      */
-    public function bsonSerialize()
+    public function bsonSerialize(): array
     {
         return $this->toArray();
     }
 
     /**
+     * @param string $property
+     * @param $value
+     * @return bool
+     */
+    final protected function possibleSetter(string $property, $value): bool
+    {
+        $possibleSetter = "set" . ucfirst(Str::camelize($property));
+
+        if (!method_exists($this, $possibleSetter)) {
+            return false;
+        }
+
+        $this->$possibleSetter($value);
+
+        return true;
+    }
+
+    /**
      * @param array $data
      */
-    public function bsonUnserialize(array $data)
+    public function bsonUnserialize(array $data): void
     {
         foreach ($data as $key => $value) {
             $this->offsetSet($key, $value);

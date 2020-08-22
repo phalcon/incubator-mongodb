@@ -14,13 +14,14 @@ declare(strict_types=1);
 namespace Phalcon\Incubator\MongoDB\Mvc\Test\Integration\Collection\Document;
 
 use IntegrationTester;
+use MongoDB\BSON\ObjectId;
 use Phalcon\Incubator\MongoDB\Test\Fixtures\Mvc\Collections\Documents\RobotPart;
 use Phalcon\Incubator\MongoDB\Test\Fixtures\Traits\DiTrait;
 
 /**
- * Class ConstructCest
+ * Class AssignCest
  */
-class ConstructCest
+class AssignCest
 {
     use DiTrait;
 
@@ -32,17 +33,19 @@ class ConstructCest
     }
 
     /**
-     * Tests Phalcon\Mvc\Collection\Document :: __construct()
+     * Tests Phalcon\Mvc\Collection\Document :: assign()
      *
      * @param IntegrationTester $I
-     * @since  2018-11-13
-     * @author Phalcon Team <team@phalcon.io>
      */
     public function mvcCollectionDocumentConstruct(IntegrationTester $I)
     {
-        $I->wantToTest('Mvc\Collection\Document - __construct()');
+        $I->wantToTest('Mvc\Collection\Document - assign()');
 
         $robotPart = new RobotPart();
-        $I->assertInstanceOf(RobotPart::class, $robotPart);
+        $robotPart->assign([
+            'id' => new ObjectId()
+        ]);
+
+        $I->assertInstanceOf(ObjectId::class, $robotPart->getId('object'));
     }
 }
