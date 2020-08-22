@@ -32,6 +32,8 @@ use Phalcon\Messages\Message;
 use Phalcon\Messages\MessageInterface;
 use Phalcon\Mvc\EntityInterface;
 use Phalcon\Validation\ValidationInterface;
+use ReflectionClass;
+use ReflectionException;
 use Serializable;
 use Traversable;
 
@@ -1494,6 +1496,7 @@ class Collection extends AbstractInjectionAware implements
      * @param null $dataColumnMap
      * @param null $whiteList
      * @return $this|CollectionInterface
+     * @throws ReflectionException
      */
     public function assign(array $data, $dataColumnMap = null, $whiteList = null): CollectionInterface
     {
@@ -1513,7 +1516,12 @@ class Collection extends AbstractInjectionAware implements
             return $this;
         }
 
-        foreach (get_object_vars($this) as $key => $value) {
+        // Use reflection to list uninitialized properties
+        $reflection = new ReflectionClass($this);
+
+        foreach ($reflection->getProperties() as $reflectionMethod) {
+            $key = $reflectionMethod->getName();
+
             if (isset($dataMapped[$key])) {
                 if (is_array($whiteList) && !in_array($key, $whiteList, true)) {
                     continue;
