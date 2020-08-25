@@ -70,12 +70,19 @@ class FindCest
         $I->wantToTest('Mvc\Collection - find()');
 
         $robots = Robots::find();
+        $robots1 = Robots::find();
         $robotsE = Robots::find([['last_name' => 'E']]);
 
+        $result = $robots->toArray();
+
+        foreach ($robots1 as $rb) {
+            $I->assertInstanceOf(Robots::class, $rb);
+        }
+
         $I->assertNotEmpty($robots);
-        $I->assertInstanceOf(Robots::class, $robots[0]);
-        $I->assertEquals(3, count($robots));
-        $I->assertEquals(2, count($robotsE));
+        $I->assertInstanceOf(Robots::class, $result[0]);
+        $I->assertCount(3, $result);
+        $I->assertCount(2, $robotsE->toArray());
     }
 
     public function _after()

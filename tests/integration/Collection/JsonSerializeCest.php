@@ -49,7 +49,7 @@ class JsonSerializeCest
         $this->mongo = $this->getDi()->get('mongo');
 
         $rbpart = new RobotPart();
-        $rbpart->id = new ObjectId();
+        $rbpart->setId(new ObjectId());
         $rbpart->setDate(new DateTime());
 
         $this->data = [

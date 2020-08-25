@@ -19,6 +19,11 @@ use Phalcon\Messages\Message;
 use Phalcon\Validation;
 use Phalcon\Validation\Validator\Numericality;
 
+/**
+ * Class Robots
+ *
+ * @package Phalcon\Incubator\MongoDB\Test\Fixtures\Mvc\Collections
+ */
 class Robots extends Collection
 {
     public $first_name;
@@ -72,7 +77,7 @@ class Robots extends Collection
      */
     public function setProtectedField($protected_field): void
     {
-        $this->protected_field = $protected_field;
+        $this->protected_field = $protected_field + 1;
     }
 
     /**

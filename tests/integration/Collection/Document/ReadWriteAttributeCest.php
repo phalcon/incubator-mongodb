@@ -56,7 +56,7 @@ class ReadWriteAttributeCest
         $robotPart = new RobotPart(['common_name' => $common_name]);
 
         $robotPart->writeAttribute('id', $robot->getId());
-        $I->assertEquals($robotPart->id, $robot->getId());
+        $I->assertEquals($robotPart->getId('object'), $robot->getId());
 
         $partName = $robotPart->readAttribute('common_name');
         $I->assertEquals($common_name, $partName);

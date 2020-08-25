@@ -15,12 +15,15 @@ namespace Phalcon\Incubator\MongoDB\Test\Fixtures\Mvc\Collections\Documents;
 
 use DateTime;
 use DateTimeInterface;
+use MongoDB\BSON\ObjectId;
 use MongoDB\BSON\UTCDateTime;
+use Phalcon\Incubator\MongoDB\Helper\Mongo;
 use Phalcon\Incubator\MongoDB\Mvc\Collection\Document;
+use function GuzzleHttp\Psr7\str;
 
 class RobotPart extends Document
 {
-    public $id;
+    protected $id;
 
     public $common_name;
 
@@ -44,8 +47,40 @@ class RobotPart extends Document
      */
     public function getDate()
     {
-        return $this->date
-            ->toDateTime()
-            ->format(DateTime::ISO8601);
+        if (null !== $this->date) {
+            return $this->date
+                ->toDateTime()
+                ->format(DateTime::ATOM);
+        }
+
+        return null;
+    }
+
+    /**
+     * @param string $type
+     * @return mixed
+     */
+    public function getId($type = 'string')
+    {
+        switch ($type) {
+            case 'string':
+                return (string) $this->id;
+
+            case 'object':
+                return $this->id;
+
+            default:
+                return null;
+        }
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
+    {
+        $this->id = Mongo::isValidObjectId($id)
+            ? new ObjectId((string)$id)
+            : null;
     }
 }

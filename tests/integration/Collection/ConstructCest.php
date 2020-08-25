@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Phalcon\Incubator\MongoDB\Mvc\Test\Integration\Collection;
 
 use IntegrationTester;
+use Phalcon\Incubator\MongoDB\Test\Fixtures\Mvc\Collections\Documents\RobotPart;
 use Phalcon\Incubator\MongoDB\Test\Fixtures\Mvc\Collections\Robots;
 use Phalcon\Incubator\MongoDB\Test\Fixtures\Traits\DiTrait;
 
@@ -43,7 +44,10 @@ class ConstructCest
         $I->wantToTest('Mvc\Collection - __construct()');
 
         $robot = new Robots();
+        $robot->rbpart = new RobotPart();
+
         $I->assertInstanceOf(Robots::class, $robot);
+        $I->assertInstanceOf(RobotPart::class, $robot->rbpart);
         $I->assertEquals(Robots::DIRTY_STATE_TRANSIENT, $robot->getDirtyState());
     }
 }
