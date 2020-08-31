@@ -56,7 +56,7 @@ jobs:
                   cp tests/_ci/.env.default .env
                   vendor/bin/codecept build
             - name: Run unit tests
-              run: vendor/bin/codecept run --ext DotReporter unit --coverage --coverage-xml
+              run: vendor/bin/codecept run --ext DotReporter integration --coverage --coverage-xml
 
 #      - name: Run integration tests
 #        env:
