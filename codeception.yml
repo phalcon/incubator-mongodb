@@ -17,9 +17,9 @@ settings:
     memory_limit: 1024M
     lint: true
 
-coverage:
-    # Disable Code Coverage by default to speed up Travis tests
-    enabled: false
+#coverage:
+#    # Disable Code Coverage by default to speed up Travis tests
+#    enabled: false
 
 extensions:
     enabled:

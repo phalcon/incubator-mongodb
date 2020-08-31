@@ -38,12 +38,11 @@ if (!function_exists('loadEnvironment')) {
         /**
          * Necessary evil. We need to set some constants for INI files to work
          */
-        defineFromEnv('DATA_MYSQL_CHARSET');
-        defineFromEnv('DATA_MYSQL_HOST');
-        defineFromEnv('DATA_MYSQL_NAME');
-        defineFromEnv('DATA_MYSQL_PASS');
-        defineFromEnv('DATA_MYSQL_PORT');
-        defineFromEnv('DATA_MYSQL_USER');
+        defineFromEnv('DATA_MONGODB_HOST');
+        defineFromEnv('DATA_MONGODB_PORT');
+        defineFromEnv('DATA_MONGODB_USER');
+        defineFromEnv('DATA_MONGODB_PASS');
+        defineFromEnv('DATA_MONGODB_NAME');
         defineFromEnv('PATH_CACHE');
         defineFromEnv('PATH_DATA');
         defineFromEnv('PATH_OUTPUT');
