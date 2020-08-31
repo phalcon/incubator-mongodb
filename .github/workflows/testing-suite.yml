@@ -4,7 +4,7 @@ on: [push, pull_request]
 jobs:
     build-and-test-linux:
         services:
-            redis:
+            mongo:
                 image: mongo:4.2
                 ports:
                     - 27017
@@ -46,7 +46,7 @@ jobs:
                   php-version: ${{ matrix.php-versions }}
                   ini-values: apc.enable_cli=on, session.save_path=/tmp
                   tools: pecl
-                  extensions: mbstring, intl, json, imagick
+                  extensions: mbstring, intl, json, imagick, phalcon
 
             - name: Install packages
               run: composer install --prefer-dist
