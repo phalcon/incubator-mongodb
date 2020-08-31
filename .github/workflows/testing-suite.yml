@@ -7,7 +7,7 @@ jobs:
             mongodb:
                 image: mongo:4.2
                 ports:
-                    - 27017
+                    - 27017:27017
         runs-on: ${{ matrix.operating-system }}
         strategy:
             fail-fast: false
