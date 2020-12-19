@@ -1,2 +1,2 @@
-# incubator-mongodb
+# Phalcon\Incubator\MongoDB
 incubator mongodb
