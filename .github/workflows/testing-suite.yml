@@ -9,6 +9,9 @@ jobs:
                 ports:
                     - 27017:27017
         runs-on: ${{ matrix.operating-system }}
+        env:
+            extensions: mbstring, intl, json, phalcon4, xdebug
+            key: cache-v0.0.2
         strategy:
             fail-fast: false
             matrix:
