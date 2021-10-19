@@ -2,58 +2,76 @@ name: Testing Suite
 on: [push, pull_request]
 
 jobs:
-    build-and-test-linux:
-        services:
-            mongodb:
-                image: mongo:4.2
-                ports:
-                    - 27017:27017
-        runs-on: ${{ matrix.operating-system }}
-        strategy:
-            fail-fast: false
-            matrix:
-                operating-system: [ubuntu-latest]
-                php-versions: ['7.4']
+  run-tests:
+    name: PHP ${{ matrix.php-versions }} with Phalcon ${{ matrix.phalcon-versions }}
+    runs-on: ubuntu-latest
+    env:
+      extensions: mbstring, intl, json, phalcon-${{ matrix.phalcon-versions }}, xdebug
+      key: cache-v0.0.2
+    services:
+      mongodb:
+        image: mongo:4.2
+        ports:
+          - 27017:27017
+    strategy:
+      fail-fast: false
+      matrix:
+        php-versions: ['7.2', '7.3', '7.4']
+        # There is no 4.1.1 version due release bug
+        phalcon-versions: ['4.0.5', '4.0.6', '4.1.0', '4.1.2']
+    steps:
+      - uses: actions/checkout@v1
+      - name: Setup cache environment
+        id: cache-env
+        uses: shivammathur/cache-extensions@v1
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: ${{ env.extensions }}
+          key: ${{ env.key }}
 
-        name: PHP ${{ matrix.php-versions }} Test on ${{ matrix.operating-system }}
-        steps:
+      - name: Cache extensions
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.cache-env.outputs.dir }}
+          key: ${{ steps.cache-env.outputs.key }}
+          restore-keys: ${{ steps.cache-env.outputs.key }}
 
-            - name: Git checkout
-              uses: actions/checkout@v2-beta
-              with:
-                  fetch-depth: 1
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: ${{ env.extensions }}
+          tools: pecl
+          ini-values: apc.enable_cli=on, session.save_path=/tmp
 
-            - name: Get Composer Cache Directory
-              id: composer-cache
-              run: |
-                  echo "::set-output name=dir::$(composer config cache-files-dir)"
-            - name: Setup Cache
-              uses: actions/cache@v1
-              with:
-                  path: ${{ steps.composer-cache.outputs.dir }}
-                  key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-                  restore-keys: |
-                      ${{ runner.os }}-composer-
-            - name: Setup Composer Token
-              run: |
-                  # To increase the Composer rate limit we're use GitHub authentication
-                  if [ -n "${{ secrets.COMPOSER_TOKEN }}" ]; then
-                    composer config github-oauth.github.com "${{ secrets.COMPOSER_TOKEN }}"
-                  fi
-            - name: Setup PHP
-              uses: shivammathur/setup-php@v1
-              with:
-                  php-version: ${{ matrix.php-versions }}
-                  ini-values: apc.enable_cli=on, session.save_path=/tmp
-                  tools: pecl
-                  extensions: mbstring, intl, json, imagick, phalcon
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
 
-            - name: Install packages
-              run: composer install --prefer-dist
+      - name: Cache composer dependencies
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
 
-            - name: Setup tests
-              run: |
-                  cp tests/_ci/.env.default .env
-                  vendor/bin/codecept build
-            - name: Run integration tests
-              run: vendor/bin/codecept run --ext DotReporter integration --coverage --coverage-xml
+      - name: Install Composer dependencies
+        run: composer install --prefer-dist --no-suggest
+
+      - name: Copy .env file
+        run: cp tests/_ci/.env.default .env
+
+      - name: Setup tests
+        if: success()
+        run: vendor/bin/codecept build
+
+      - name: Run integration tests
+        if: success()
+        run: vendor/bin/codecept run --ext DotReporter integration --coverage --coverage-xml=coverage-${{ matrix.php-versions }}.xml
+
+      - name: Upload coverage to Codecov
+        if: success()
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{secrets.CODECOV_TOKEN}}
+          file: ./tests/_output/coverage-*.xml
