@@ -59,7 +59,7 @@ jobs:
         run: composer install --prefer-dist --no-suggest
 
       - name: Copy .env file
-        run: cp tests/.env.example tests/.env
+        run: cp tests/_ci/.env.default .env
 
       - name: Setup tests
         if: success()
