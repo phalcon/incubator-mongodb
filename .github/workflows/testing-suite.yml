@@ -16,7 +16,7 @@ jobs:
             fail-fast: false
             matrix:
                 operating-system: [ubuntu-latest]
-                php-versions: ['7.4']
+                php-versions: ['7.2', '7.3', '7.4']
 
         name: PHP ${{ matrix.php-versions }} Test on ${{ matrix.operating-system }}
         steps:
@@ -30,6 +30,7 @@ jobs:
               id: composer-cache
               run: |
                   echo "::set-output name=dir::$(composer config cache-files-dir)"
+
             - name: Setup Cache
               uses: actions/cache@v1
               with:
@@ -37,19 +38,21 @@ jobs:
                   key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
                   restore-keys: |
                       ${{ runner.os }}-composer-
+
             - name: Setup Composer Token
               run: |
                   # To increase the Composer rate limit we're use GitHub authentication
                   if [ -n "${{ secrets.COMPOSER_TOKEN }}" ]; then
                     composer config github-oauth.github.com "${{ secrets.COMPOSER_TOKEN }}"
                   fi
+
             - name: Setup PHP
               uses: shivammathur/setup-php@v1
               with:
-                  php-version: ${{ matrix.php-versions }}
                   ini-values: apc.enable_cli=on, session.save_path=/tmp
+                  php-version: ${{ matrix.php-versions }}
+                  extensions: ${{ env.extensions }}
                   tools: pecl
-                  extensions: mbstring, intl, json, imagick, phalcon
 
             - name: Install packages
               run: composer install --prefer-dist
