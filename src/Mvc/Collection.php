@@ -20,18 +20,18 @@ use MongoDB\BSON\Serializable as BsonSerializable;
 use MongoDB\BSON\Unserializable;
 use MongoDB\Database;
 use MongoDB\Driver\Cursor;
-use Phalcon\Di;
+use Phalcon\Di\Di;
 use Phalcon\Di\AbstractInjectionAware;
 use Phalcon\Di\DiInterface;
 use Phalcon\Events\ManagerInterface as EventsManagerInterface;
-use Phalcon\Helper\Str;
+use Phalcon\Support\Helper\Str\Camelize;
 use Phalcon\Incubator\MongoDB\Mvc\Collection\BehaviorInterface;
 use Phalcon\Incubator\MongoDB\Mvc\Collection\Exception;
 use Phalcon\Incubator\MongoDB\Mvc\Collection\ManagerInterface;
 use Phalcon\Messages\Message;
 use Phalcon\Messages\MessageInterface;
 use Phalcon\Mvc\EntityInterface;
-use Phalcon\Validation\ValidationInterface;
+use Phalcon\Filter\Validation\ValidationInterface;
 use ReflectionClass;
 use ReflectionException;
 use Serializable;
@@ -1463,7 +1463,8 @@ class Collection extends AbstractInjectionAware implements
 
     final protected function possibleSetter(string $property, $value): bool
     {
-        $possibleSetter = "set" . ucfirst(Str::camelize($property));
+        $camelize = new Camelize();
+        $possibleSetter = "set" . ucfirst($camelize->__invoke($property));
 
         if (!method_exists($this, $possibleSetter)) {
             return false;
@@ -1482,7 +1483,8 @@ class Collection extends AbstractInjectionAware implements
      */
     final protected function possibleGetter(string $property)
     {
-        $possibleGetter = "get" . ucfirst(Str::camelize($property));
+        $camelize = new Camelize();
+        $possibleGetter = "get" . ucfirst($camelize->__invoke($property));
 
         if (!method_exists($this, $possibleGetter)) {
             return $this->$property;

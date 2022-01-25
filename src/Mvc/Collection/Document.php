@@ -17,7 +17,7 @@ use ArrayAccess;
 use JsonSerializable;
 use MongoDB\BSON\Serializable;
 use MongoDB\BSON\Unserializable;
-use Phalcon\Helper\Str;
+use Phalcon\Support\Helper\Str\Camelize;
 use Phalcon\Incubator\MongoDB\Mvc\CollectionInterface;
 use Phalcon\Mvc\EntityInterface;
 use ReflectionClass;
@@ -213,7 +213,8 @@ class Document implements
      */
     final protected function possibleGetter(string $property)
     {
-        $possibleGetter = "get" . ucfirst(Str::camelize($property));
+        $camelize = new Camelize();
+        $possibleGetter = "get" . ucfirst($camelize->__invoke($property));
 
         if (!method_exists($this, $possibleGetter)) {
             return $this->$property;
@@ -237,7 +238,8 @@ class Document implements
      */
     final protected function possibleSetter(string $property, $value): bool
     {
-        $possibleSetter = "set" . ucfirst(Str::camelize($property));
+        $camelize = new Camelize();
+        $possibleSetter = "set" . ucfirst($camelize->__invoke($property));
 
         if (!method_exists($this, $possibleSetter)) {
             return false;

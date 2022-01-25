@@ -20,7 +20,7 @@ use Phalcon\Di\DiInterface;
 use Phalcon\Di\InjectionAwareInterface;
 use Phalcon\Events\EventsAwareInterface;
 use Phalcon\Events\ManagerInterface as EventsManagerInterface;
-use Phalcon\Helper\Str;
+use Phalcon\Support\Helper\Str\Uncamelize;
 use Phalcon\Incubator\MongoDB\Mvc\CollectionInterface;
 
 use function Phalcon\Incubator\MongoDB\get_class_lower;
@@ -132,11 +132,12 @@ class Manager implements ManagerInterface, InjectionAwareInterface, EventsAwareI
     public function getCollectionSource(CollectionInterface $collection): string
     {
         $entityName = get_class_lower($collection);
+        $uncamelize =  new Uncamelize();
 
         if (!isset($this->sources[$entityName])) {
             $this->setCollectionSource(
                 $collection,
-                Str::uncamelize(get_class_ns($collection))
+                $uncamelize->__invoke(get_class_ns($collection))
             );
         }
 
