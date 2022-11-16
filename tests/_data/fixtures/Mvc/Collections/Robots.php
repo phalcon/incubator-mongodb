@@ -16,8 +16,8 @@ namespace Phalcon\Incubator\MongoDB\Test\Fixtures\Mvc\Collections;
 use Phalcon\Incubator\MongoDB\Mvc\Collection;
 use Phalcon\Incubator\MongoDB\Test\Fixtures\Mvc\Collections\Documents\RobotPart;
 use Phalcon\Messages\Message;
-use Phalcon\Validation;
-use Phalcon\Validation\Validator\Numericality;
+use Phalcon\Filter\Validation;
+use Phalcon\Filter\Validation\Validator\Numericality;
 
 /**
  * Class Robots

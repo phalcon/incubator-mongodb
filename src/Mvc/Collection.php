@@ -20,18 +20,18 @@ use MongoDB\BSON\Serializable as BsonSerializable;
 use MongoDB\BSON\Unserializable;
 use MongoDB\Database;
 use MongoDB\Driver\Cursor;
-use Phalcon\Di;
+use Phalcon\Di\Di;
 use Phalcon\Di\AbstractInjectionAware;
 use Phalcon\Di\DiInterface;
 use Phalcon\Events\ManagerInterface as EventsManagerInterface;
-use Phalcon\Helper\Str;
+use Phalcon\Support\Helper\Str\Camelize;
 use Phalcon\Incubator\MongoDB\Mvc\Collection\BehaviorInterface;
 use Phalcon\Incubator\MongoDB\Mvc\Collection\Exception;
 use Phalcon\Incubator\MongoDB\Mvc\Collection\ManagerInterface;
 use Phalcon\Messages\Message;
 use Phalcon\Messages\MessageInterface;
 use Phalcon\Mvc\EntityInterface;
-use Phalcon\Validation\ValidationInterface;
+use Phalcon\Filter\Validation\ValidationInterface;
 use ReflectionClass;
 use ReflectionException;
 use Serializable;
@@ -1051,6 +1051,16 @@ class Collection extends AbstractInjectionAware implements
         return serialize($this->toArray());
     }
 
+    public function __serialize(): array
+    {
+        return $this->toArray();
+    }
+
+    public function __unserialize(array $data): void
+    {
+        $this->buildFromArray($data);
+    }
+
     /**
      * Sets the DependencyInjection connection service name
      *
@@ -1115,8 +1125,8 @@ class Collection extends AbstractInjectionAware implements
      *
      *```php
      * use Phalcon\Incubator\Mvc\Collection;
-     * use Phalcon\Validation;
-     * use Phalcon\Validation\Validator\ExclusionIn;
+     * use Phalcon\Filter\Validation;
+     * use Phalcon\Filter\Validation\Validator\ExclusionIn;
      *
      * class Subscriptors extends Collection
      * {
@@ -1286,28 +1296,33 @@ class Collection extends AbstractInjectionAware implements
         }
 
         if (is_array($attributes)) {
-            /**
-             * Gets the default collectionsManager service
-             */
-            $manager = $container->getShared("collectionManager");
+            $this->buildFromArray($attributes);
+        }
+    }
 
-            if ($manager === null) {
-                throw new Exception(
-                    "The injected service 'collectionManager' is not valid"
-                );
-            }
+    protected function buildFromArray(array $data): void
+    {
+        /**
+         * Gets the default collectionsManager service
+         */
+        $manager = $container = Di::getDefault()->getShared("collectionManager");
 
-            /**
-             * Update the collections manager
-             */
-            $this->collectionsManager = $manager;
+        if ($manager === null) {
+            throw new Exception(
+                "The injected service 'collectionManager' is not valid"
+            );
+        }
 
-            /**
-             * Update the objects attributes
-             */
-            foreach ($attributes as $key => $value) {
-                $this->writeAttribute($key, $value);
-            }
+        /**
+         * Update the collections manager
+         */
+        $this->collectionsManager = $manager;
+
+        /**
+         * Update the objects attributes
+         */
+        foreach ($data as $key => $value) {
+            $this->writeAttribute($key, $value);
         }
     }
 
@@ -1463,7 +1478,7 @@ class Collection extends AbstractInjectionAware implements
 
     final protected function possibleSetter(string $property, $value): bool
     {
-        $possibleSetter = "set" . ucfirst(Str::camelize($property));
+        $possibleSetter = "set" . ucfirst((new Camelize())($property));
 
         if (!method_exists($this, $possibleSetter)) {
             return false;
@@ -1482,7 +1497,7 @@ class Collection extends AbstractInjectionAware implements
      */
     final protected function possibleGetter(string $property)
     {
-        $possibleGetter = "get" . ucfirst(Str::camelize($property));
+        $possibleGetter = "get" . ucfirst((new Camelize)($property));
 
         if (!method_exists($this, $possibleGetter)) {
             return $this->$property;

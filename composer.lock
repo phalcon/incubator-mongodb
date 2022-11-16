@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "56020cdbb3d40edd4bd37c793b4eabe7",
+    "content-hash": "c20f917ad5f3b1991c0aa50634bcf908",
     "packages": [],
     "packages-dev": [
         {
@@ -1413,20 +1413,20 @@
         },
         {
             "name": "phalcon/ide-stubs",
-            "version": "v4.1.0",
+            "version": "v5.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phalcon/ide-stubs.git",
-                "reference": "77384e4f42542f11b065b2a860b9bca2ea20ad5a"
+                "reference": "409ec3ea7bba5bfd5af5a221dd59ad3de968e792"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phalcon/ide-stubs/zipball/77384e4f42542f11b065b2a860b9bca2ea20ad5a",
-                "reference": "77384e4f42542f11b065b2a860b9bca2ea20ad5a",
+                "url": "https://api.github.com/repos/phalcon/ide-stubs/zipball/409ec3ea7bba5bfd5af5a221dd59ad3de968e792",
+                "reference": "409ec3ea7bba5bfd5af5a221dd59ad3de968e792",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.2.0"
+                "php": ">=7.4"
             },
             "require-dev": {
                 "squizlabs/php_codesniffer": "3.*",
@@ -1476,7 +1476,7 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2020-11-13T10:58:11+00:00"
+            "time": "2022-11-02T03:55:40+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -4883,8 +4883,8 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.2",
-        "ext-phalcon": "^4.0",
+        "php": ">=7.4",
+        "ext-phalcon": "^5.0",
         "ext-mongodb": "*",
         "ext-json": "*"
     },

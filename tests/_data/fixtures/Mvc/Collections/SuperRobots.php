@@ -13,11 +13,7 @@ declare(strict_types=1);
 
 namespace Phalcon\Incubator\MongoDB\Test\Fixtures\Mvc\Collections;
 
-use Phalcon\Incubator\MongoDB\Mvc\Collection;
 use Phalcon\Incubator\MongoDB\Test\Fixtures\Mvc\Collections\Documents\RobotPart;
-use Phalcon\Messages\Message;
-use Phalcon\Validation;
-use Phalcon\Validation\Validator\Numericality;
 
 /**
  * Class SuperRobots

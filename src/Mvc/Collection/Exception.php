@@ -20,7 +20,7 @@ namespace Phalcon\Incubator\MongoDB\Mvc\Collection;
  *
  * @package Phalcon\Incubator\MongoDB\Mvc\Collection
  */
-class Exception extends \Phalcon\Exception
+class Exception extends \Exception
 {
 
 }

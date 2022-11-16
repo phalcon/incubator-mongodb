@@ -23,10 +23,10 @@ use Phalcon\Incubator\MongoDB\Mvc\CollectionInterface;
  * This components controls the initialization of collections, keeping record of relations
  * between the different collections of the application.
  *
- * A CollectionManager is injected to a collection via a Dependency Injector Container such as Phalcon\Di.
+ * A CollectionManager is injected to a collection via a Dependency Injector Container such as Phalcon\Di\Di.
  *
  * <code>
- * $di = new \Phalcon\Di();
+ * $di = new \Phalcon\Di\Di\Di();
  *
  * $di->set(
  *     "collectionManager",

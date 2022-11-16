@@ -20,7 +20,7 @@ use Phalcon\Di\DiInterface;
 use Phalcon\Di\InjectionAwareInterface;
 use Phalcon\Events\EventsAwareInterface;
 use Phalcon\Events\ManagerInterface as EventsManagerInterface;
-use Phalcon\Helper\Str;
+use Phalcon\Support\Helper\Str\Uncamelize;
 use Phalcon\Incubator\MongoDB\Mvc\CollectionInterface;
 
 use function Phalcon\Incubator\MongoDB\get_class_lower;
@@ -32,10 +32,10 @@ use function Phalcon\Incubator\MongoDB\get_class_ns;
  * This components controls the initialization of collections, keeping record of relations
  * between the different collections of the application.
  *
- * A CollectionManager is injected to a collection via a Dependency Injector Container such as Phalcon\Di.
+ * A CollectionManager is injected to a collection via a Dependency Injector Container such as Phalcon\Di\Di.
  *
  * <code>
- * $di = new \Phalcon\Di();
+ * $di = new \Phalcon\Di\Di\Di();
  *
  * $di->set(
  *     "collectionManager",
@@ -136,7 +136,7 @@ class Manager implements ManagerInterface, InjectionAwareInterface, EventsAwareI
         if (!isset($this->sources[$entityName])) {
             $this->setCollectionSource(
                 $collection,
-                Str::uncamelize(get_class_ns($collection))
+                (new Uncamelize())(get_class_ns($collection))
             );
         }
 

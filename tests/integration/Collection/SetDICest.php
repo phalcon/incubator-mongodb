@@ -15,7 +15,7 @@ namespace Phalcon\Incubator\MongoDB\Mvc\Test\Integration\Collection;
 
 use IntegrationTester;
 use MongoDB\Database;
-use Phalcon\Di;
+use Phalcon\Di\Di;
 use Phalcon\Incubator\MongoDB\Test\Fixtures\Mvc\Collections\Robots;
 use Phalcon\Incubator\MongoDB\Test\Fixtures\Traits\DiTrait;
 use stdClass;
