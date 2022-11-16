@@ -1563,7 +1563,7 @@ class Collection extends AbstractInjectionAware implements
     /**
      * @inheritDoc
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         $data = [];
         $reserved = $this->getReservedAttributes();
