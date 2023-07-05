@@ -18,9 +18,9 @@ Set of helpers - simplifying working with mongodb via AR paradigm.
 
 `Phalcon\Incubator\MongoDB\Helper`
 
-| Method | Description |
-| --- | --- |
-| `Helper::isValidObjectId($id)` | Checks if id parameter is a valid ObjectID |
+| Method                               | Description                                            |
+|--------------------------------------|--------------------------------------------------------|
+| `Helper::isValidObjectId($id)`       | Checks if id parameter is a valid ObjectID             |
 | `Helper::convertDatetime($datetime)` | Converts a DateTime object to UTCDateTime from MongoDB |
 
 ## Collection Manager
