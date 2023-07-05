@@ -16,7 +16,6 @@ declare(strict_types=1);
 namespace Phalcon\Incubator\MongoDB;
 
 use ReflectionClass;
-use ReflectionException;
 
 /**
  * Return classname to lower
