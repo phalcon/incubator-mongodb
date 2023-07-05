@@ -18,11 +18,6 @@ use MongoDB\Database;
 use Phalcon\Messages\MessageInterface;
 use Phalcon\Mvc\EntityInterface;
 
-/**
- * Phalcon\Mvc\CollectionInterface
- *
- * Interface for Phalcon\Mvc\Collection
- */
 interface CollectionInterface
 {
     /**

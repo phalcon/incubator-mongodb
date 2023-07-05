@@ -18,8 +18,6 @@ use Phalcon\Events\ManagerInterface as EventsManagerInterface;
 use Phalcon\Incubator\MongoDB\Mvc\CollectionInterface;
 
 /**
- * Phalcon\Mvc\Collection\Manager
- *
  * This components controls the initialization of collections, keeping record of relations
  * between the different collections of the application.
  *

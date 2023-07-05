@@ -24,12 +24,8 @@ use ReflectionClass;
 use ReflectionException;
 
 /**
- * Class Document
- *
  * This component allows Phalcon\Incubator\Mvc\Collection to return rows without an associated entity.
  * This objects implements the ArrayAccess interface to allow access the object as object->x or array[x].
- *
- * @package Phalcon\Incubator\Mvc\Collection
  */
 class Document implements
     EntityInterface,

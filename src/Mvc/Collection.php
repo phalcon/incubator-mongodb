@@ -38,11 +38,7 @@ use Serializable;
 use Traversable;
 
 /**
- * Class Collection
- *
  * ActiveRecord class for the management of MongoDB collections
- *
- * @package Phalconator\Mvc
  */
 class Collection extends AbstractInjectionAware implements
     CollectionInterface,

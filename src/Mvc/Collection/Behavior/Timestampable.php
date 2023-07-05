@@ -19,12 +19,8 @@ use Phalcon\Incubator\MongoDB\Mvc\Collection\Exception;
 use Phalcon\Incubator\MongoDB\Mvc\CollectionInterface;
 
 /**
- * Phalcon\Incubator\MongoDB\Mvc\Collection\Behavior\Timestampable
- *
  * Allows to automatically update a collection’s attribute saving the
  * datetime when a record is created or updated
- *
- * @package Phalcon\Incubator\MongoDB\Mvc\Collection\Behavior
  */
 class Timestampable extends Behavior
 {

@@ -27,8 +27,6 @@ use function Phalcon\Incubator\MongoDB\get_class_lower;
 use function Phalcon\Incubator\MongoDB\get_class_ns;
 
 /**
- * Phalcon\Incubator\MongoDB\Mvc\Collection\Manager
- *
  * This components controls the initialization of collections, keeping record of relations
  * between the different collections of the application.
  *
@@ -46,8 +44,6 @@ use function Phalcon\Incubator\MongoDB\get_class_ns;
  *
  * $robot = new Robots($di);
  * </code>
- *
- * @package Phalcon\Incubator\MongoDB\Mvc\Collection
  */
 class Manager implements ManagerInterface, InjectionAwareInterface, EventsAwareInterface
 {

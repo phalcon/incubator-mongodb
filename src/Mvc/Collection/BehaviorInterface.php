@@ -15,11 +15,6 @@ namespace Phalcon\Incubator\MongoDB\Mvc\Collection;
 
 use Phalcon\Incubator\MongoDB\Mvc\CollectionInterface;
 
-/**
- * Phalcon\Mvc\Collection\BehaviorInterface
- *
- * Interface for Phalcon\Mvc\Collection\Behavior
- */
 interface BehaviorInterface
 {
     /**

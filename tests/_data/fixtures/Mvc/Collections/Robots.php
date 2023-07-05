@@ -19,11 +19,6 @@ use Phalcon\Messages\Message;
 use Phalcon\Validation;
 use Phalcon\Validation\Validator\Numericality;
 
-/**
- * Class Robots
- *
- * @package Phalcon\Incubator\MongoDB\Test\Fixtures\Mvc\Collections
- */
 class Robots extends Collection
 {
     public $first_name;

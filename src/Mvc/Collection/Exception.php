@@ -14,13 +14,8 @@ declare(strict_types=1);
 namespace Phalcon\Incubator\MongoDB\Mvc\Collection;
 
 /**
- * Phalcon\Incubator\MongoDB\Mvc\Collection\Exception
- *
  * Exceptions thrown in Phalcon\Incubator\MongoDB\Mvc\Collection\* classes will use this class
- *
- * @package Phalcon\Incubator\MongoDB\Mvc\Collection
  */
 class Exception extends \Phalcon\Exception
 {
-
 }

@@ -16,11 +16,7 @@ namespace Phalcon\Incubator\MongoDB\Mvc\Collection;
 use Phalcon\Incubator\MongoDB\Mvc\CollectionInterface;
 
 /**
- * Phalcon\Incubator\MongoDB\Mvc\Collection\Behavior
- *
  * This is an optional base class for ORM behaviors
- *
- * @package Phalcon\Incubator\MongoDB\Mvc\Collection
  */
 abstract class Behavior implements BehaviorInterface
 {

@@ -19,12 +19,8 @@ use Phalcon\Incubator\MongoDB\Mvc\CollectionInterface;
 use Phalcon\Mvc\EntityInterface;
 
 /**
- * Phalcon\Incubator\MongoDB\Mvc\Collection\Behavior\SoftDelete
- *
  * Instead of permanently delete a record it marks the record as
  * deleted changing the value of a flag column
- *
- * @package Phalcon\Incubator\MongoDB\Mvc\Collection\Behavior
  */
 class SoftDelete extends Behavior
 {

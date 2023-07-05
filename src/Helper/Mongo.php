@@ -17,11 +17,6 @@ use DateTimeInterface;
 use MongoDB\BSON\ObjectID;
 use MongoDB\BSON\UTCDateTime;
 
-/**
- * Class Mongo
- *
- * @package Phalcon\Incubator\MongoDB\Helper
- */
 class Mongo
 {
     /**
