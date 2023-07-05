@@ -19,7 +19,6 @@ use MongoDB\BSON\ObjectId;
 use MongoDB\BSON\UTCDateTime;
 use Phalcon\Incubator\MongoDB\Helper\Mongo;
 use Phalcon\Incubator\MongoDB\Mvc\Collection\Document;
-use function GuzzleHttp\Psr7\str;
 
 class RobotPart extends Document
 {
@@ -58,9 +57,9 @@ class RobotPart extends Document
 
     /**
      * @param string $type
-     * @return mixed
+     * @return string|null
      */
-    public function getId($type = 'string')
+    public function getId(string $type = 'string'): ?string
     {
         switch ($type) {
             case 'string':
