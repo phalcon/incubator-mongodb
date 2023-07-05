@@ -37,10 +37,7 @@ function get_class_lower(object $object): string
  */
 function get_class_ns(object $object): ?string
 {
-    try {
-        $reflection = new ReflectionClass($object);
-        return $reflection->getShortName();
-    } catch (ReflectionException $e) {
-        return null;
-    }
+    $reflection = new ReflectionClass($object);
+
+    return $reflection->getShortName();
 }
