@@ -6,7 +6,7 @@ jobs:
     name: PHP ${{ matrix.php-versions }} with Phalcon ${{ matrix.phalcon-versions }}
     runs-on: ubuntu-latest
     env:
-      extensions: mbstring, intl, json, phalcon-${{ matrix.phalcon-versions }}, xdebug
+      extensions: mbstring, intl, json, psr, phalcon-${{ matrix.phalcon-versions }}, xdebug
       key: cache-v0.0.2
     services:
       mongodb:
