@@ -3,6 +3,7 @@ version: '3.5'
 services:
   incubator-mongodb:
     container_name: phalcon-incubator-mongodb
+    tty: true
     build: .docker
     volumes:
       - .:/srv
