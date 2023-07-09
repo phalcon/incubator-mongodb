@@ -1,0 +1,17 @@
+version: '3.5'
+
+services:
+  incubator-mongodb:
+    container_name: phalcon-incubator-mongodb
+    build: .docker
+    volumes:
+      - .:/srv
+    working_dir: /srv
+
+  mongodb:
+    container_name: phalcon-incubator-mongo
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
