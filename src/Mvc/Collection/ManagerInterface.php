@@ -18,7 +18,7 @@ use Phalcon\Events\ManagerInterface as EventsManagerInterface;
 use Phalcon\Incubator\MongoDB\Mvc\CollectionInterface;
 
 /**
- * This components controls the initialization of collections, keeping record of relations
+ * These components control the initialization of collections, keeping record of relations
  * between the different collections of the application.
  *
  * A CollectionManager is injected to a collection via a Dependency Injector Container such as Phalcon\Di.
