@@ -33,12 +33,8 @@ class Document implements
     Serializable,
     JsonSerializable
 {
-    private HelperFactory $helperFactory;
-
     final public function __construct(array $data = [])
     {
-        $this->helperFactory = new HelperFactory();
-
         /**
          * This allows the developer to execute initialization stuff every time
          * an instance is created
@@ -82,7 +78,7 @@ class Document implements
             $key = $reflectionMethod->getName();
 
             if (isset($dataMapped[$key])) {
-                if (!in_array($key, $whiteList, true)) {
+                if (!empty($whiteList) && !in_array($key, $whiteList, true)) {
                     continue;
                 }
 
@@ -201,7 +197,7 @@ class Document implements
      */
     final protected function possibleGetter(string $property)
     {
-        $possibleGetter = "get" . ucfirst($this->helperFactory->camelize($property));
+        $possibleGetter = "get" . ucfirst((new HelperFactory())->camelize($property));
         if (!method_exists($this, $possibleGetter)) {
             return $this->$property;
         }
@@ -224,7 +220,7 @@ class Document implements
      */
     final protected function possibleSetter(string $property, $value): bool
     {
-        $possibleSetter = "set" . ucfirst($this->helperFactory->camelize($property));
+        $possibleSetter = "set" . ucfirst((new HelperFactory())->camelize($property));
         if (!method_exists($this, $possibleSetter)) {
             return false;
         }
