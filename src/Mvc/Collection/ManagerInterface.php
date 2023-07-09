@@ -24,7 +24,7 @@ use Phalcon\Incubator\MongoDB\Mvc\CollectionInterface;
  * A CollectionManager is injected to a collection via a Dependency Injector Container such as Phalcon\Di.
  *
  * <code>
- * $di = new \Phalcon\Di();
+ * $di = new \Phalcon\Di\Di();
  *
  * $di->set(
  *     "collectionManager",
