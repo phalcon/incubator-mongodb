@@ -1015,7 +1015,7 @@ class Collection extends AbstractInjectionAware implements
      * @param string $connectionService
      * @return $this
      */
-    public function setConnectionService($connectionService): self
+    public function setConnectionService(string $connectionService): self
     {
         $this->collectionsManager->setConnectionService($this, $connectionService);
 
@@ -1182,7 +1182,7 @@ class Collection extends AbstractInjectionAware implements
         ];
 
         /** @noinspection NotOptimalIfConditionsInspection */
-        if (class_exists($base) && is_array($base::$typeMap)) {
+        if (class_exists($base)) {
             $typeMap = array_merge($typeMap, $base::$typeMap);
         }
 
