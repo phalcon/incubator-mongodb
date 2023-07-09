@@ -38,16 +38,13 @@
         "codeception/codeception": "^4.1",
         "codeception/module-asserts": "^1.0.0",
         "mongodb/mongodb": "^1.6",
-        "phpstan/phpstan": "^0.12.18",
+        "phpstan/phpstan": "^1.10",
         "vlucas/phpdotenv": "^2.5"
     },
     "autoload": {
         "psr-4": {
             "Phalcon\\Incubator\\MongoDB\\": "src/"
-        },
-        "files": [
-            "src/functions.php"
-        ]
+        }
     },
     "autoload-dev": {
         "psr-4": {
