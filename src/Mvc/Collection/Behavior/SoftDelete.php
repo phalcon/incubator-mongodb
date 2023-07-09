@@ -34,64 +34,64 @@ class SoftDelete extends Behavior
      */
     public function notify(string $type, CollectionInterface $collection)
     {
-        if ($type === 'beforeDelete') {
-            $options = $this->getOptions();
+        if ($type !== 'beforeDelete') {
+            return;
+        }
 
-            $value = $options['value'];
-            $field = $options['field'];
+        $options = $this->getOptions();
+
+        /**
+         * 'value' is the value to be updated instead of delete the record
+         */
+        if (!isset($options['value'])) {
+            throw new Exception("The option 'value' is required");
+        }
+
+        /**
+         * 'field' is the attribute to be updated instead of delete the record
+         */
+        if (!isset($options['field']) || !is_string($options['field'])) {
+            throw new Exception("The option 'field' must be a string");
+        }
+
+        $value = $options['value'];
+        $field = $options['field'];
+
+        /**
+         * Skip the current operation
+         *
+         * @noinspection PhpPossiblePolymorphicInvocationInspection
+         */
+        $collection->skipOperation(true);
+
+        /**
+         * If the record is already flagged as 'deleted' we don't delete it again
+         */
+        if ($collection->readAttribute($field) !== $value) {
+            /**
+             * Clone the current collection to make a clean new operation
+             */
+            $updateCollection = clone $collection;
+            $updateCollection->writeAttribute($field, $value);
 
             /**
-             * 'value' is the value to be updated instead of delete the record
+             * Update the cloned collection
              */
-            if (!isset($value)) {
-                throw new Exception("The option 'value' is required");
-            }
-
-            /**
-             * 'field' is the attribute to be updated instead of delete the record
-             */
-            if (!is_string($field)) {
-                throw new Exception("The option 'field' must be a string");
-            }
-
-            /**
-             * Skip the current operation
-             *
-             * @noinspection PhpPossiblePolymorphicInvocationInspection
-             */
-            $collection->skipOperation(true);
-
-            /**
-             * If the record is already flagged as 'deleted' we don't delete it again
-             */
-            if ($collection->readAttribute($field) !== $value) {
+            if (!$updateCollection->save()) {
                 /**
-                 * Clone the current collection to make a clean new operation
+                 * Transfer the messages from the cloned collection to the original collection
                  */
-                $updateCollection = clone $collection;
-
-                $updateCollection->writeAttribute($field, $value);
-
-                /**
-                 * Update the cloned collection
-                 */
-                if (!$updateCollection->save()) {
-
-                    /**
-                     * Transfer the messages from the cloned collection to the original collection
-                     */
-                    foreach ($updateCollection->getMessages() as $message) {
-                        $collection->appendMessage($message);
-                    }
-
-                    return false;
+                foreach ($updateCollection->getMessages() as $message) {
+                    $collection->appendMessage($message);
                 }
 
-                /**
-                 * Update the original collection too
-                 */
-                $collection->writeAttribute($field, $value);
+                return false;
             }
+
+            /**
+             * Update the original collection too
+             */
+            $collection->writeAttribute($field, $value);
         }
     }
 }
