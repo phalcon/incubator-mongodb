@@ -15,9 +15,6 @@ namespace Phalcon\Incubator\MongoDB\Mvc\Test\Integration\Collection\Manager;
 
 use IntegrationTester;
 
-/**
- * Class GetConnectionCest
- */
 class GetConnectionCest
 {
     /**
@@ -29,5 +26,5 @@ class GetConnectionCest
     public function mvcCollectionManagerGetConnection(IntegrationTester $I)
     {
         $I->wantToTest('Mvc\Collection\Manager - getConnection()');
-}
+    }
 }

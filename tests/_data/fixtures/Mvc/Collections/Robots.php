@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Phalcon\Incubator\MongoDB\Test\Fixtures\Mvc\Collections;
 
+use Phalcon\Filter\Validation;
+use Phalcon\Filter\Validation\Validator\Numericality;
 use Phalcon\Incubator\MongoDB\Mvc\Collection;
 use Phalcon\Incubator\MongoDB\Test\Fixtures\Mvc\Collections\Documents\RobotPart;
 use Phalcon\Messages\Message;
-use Phalcon\Validation;
-use Phalcon\Validation\Validator\Numericality;
 
 class Robots extends Collection
 {
@@ -26,7 +26,7 @@ class Robots extends Collection
     public $version = 1;
     public $sub = [
         'bool' => false,
-        'float' => 0.02
+        'float' => 0.02,
     ];
 
     public $rbpart;
@@ -34,20 +34,18 @@ class Robots extends Collection
     protected $protected_field = 42;
     private $private_field;
 
-    protected static $typeMap = [
+    protected static array $typeMap = [
         'fieldPaths' => [
-            'rbpart' => RobotPart::class
+            'rbpart' => RobotPart::class,
         ]
     ];
 
     public function validation()
     {
         $validation = new Validation();
-        $validation->add("protected_field", new Numericality(
-            [
-                'message' => 'protected_field must be numeric'
-            ]
-        ));
+        $validation->add("protected_field", new Numericality([
+            'message' => 'protected_field must be numeric',
+        ]));
 
         if ($this->version < 1) {
             $message = new Message("The version must be greater than 1", "version");
@@ -94,7 +92,7 @@ class Robots extends Collection
     /**
      * @return array
      */
-    public function revealObjectVars()
+    public function revealObjectVars(): array
     {
         // Ignore private field for <Mvc\Collection - getReservedAttributes()> test
         return array_diff_key(get_object_vars($this), [

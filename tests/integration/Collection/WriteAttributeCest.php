@@ -14,13 +14,9 @@ declare(strict_types=1);
 namespace Phalcon\Incubator\MongoDB\Mvc\Test\Integration\Collection;
 
 use IntegrationTester;
-use MongoDB\Database;
 use Phalcon\Incubator\MongoDB\Test\Fixtures\Mvc\Collections\Robots;
 use Phalcon\Incubator\MongoDB\Test\Fixtures\Traits\DiTrait;
 
-/**
- * Class WriteAttributeCest
- */
 class WriteAttributeCest
 {
     use DiTrait;

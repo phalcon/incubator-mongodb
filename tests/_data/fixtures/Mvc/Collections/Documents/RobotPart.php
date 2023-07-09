@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Phalcon\Incubator\MongoDB\Test\Fixtures\Mvc\Collections\Documents;
 
-use DateTime;
 use DateTimeInterface;
 use MongoDB\BSON\ObjectId;
 use MongoDB\BSON\UTCDateTime;
@@ -22,6 +21,9 @@ use Phalcon\Incubator\MongoDB\Mvc\Collection\Document;
 
 class RobotPart extends Document
 {
+    /**
+     * @var mixed
+     */
     protected $id;
 
     public $common_name;
@@ -35,7 +37,7 @@ class RobotPart extends Document
      * @param mixed $date
      * @return RobotPart
      */
-    public function setDate(DateTimeInterface $date)
+    public function setDate(DateTimeInterface $date): RobotPart
     {
         $this->date = new UTCDateTime($date->getTimestamp() * 1000);
         return $this;
@@ -49,7 +51,7 @@ class RobotPart extends Document
         if (null !== $this->date) {
             return $this->date
                 ->toDateTime()
-                ->format(DateTime::ATOM);
+                ->format(DateTimeInterface::ATOM);
         }
 
         return null;
@@ -57,9 +59,9 @@ class RobotPart extends Document
 
     /**
      * @param string $type
-     * @return string|null
+     * @return mixed
      */
-    public function getId(string $type = 'string'): ?string
+    public function getId(string $type = 'string')
     {
         switch ($type) {
             case 'string':

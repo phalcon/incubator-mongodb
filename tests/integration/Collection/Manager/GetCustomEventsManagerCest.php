@@ -15,9 +15,6 @@ namespace Phalcon\Incubator\MongoDB\Mvc\Test\Integration\Collection\Manager;
 
 use IntegrationTester;
 
-/**
- * Class GetCustomEventsManagerCest
- */
 class GetCustomEventsManagerCest
 {
     /**
@@ -29,5 +26,5 @@ class GetCustomEventsManagerCest
     public function mvcCollectionManagerGetCustomEventsManager(IntegrationTester $I)
     {
         $I->wantToTest('Mvc\Collection\Manager - getCustomEventsManager()');
-}
+    }
 }

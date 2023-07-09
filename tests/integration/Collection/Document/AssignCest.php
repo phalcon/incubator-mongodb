@@ -18,9 +18,6 @@ use MongoDB\BSON\ObjectId;
 use Phalcon\Incubator\MongoDB\Test\Fixtures\Mvc\Collections\Documents\RobotPart;
 use Phalcon\Incubator\MongoDB\Test\Fixtures\Traits\DiTrait;
 
-/**
- * Class AssignCest
- */
 class AssignCest
 {
     use DiTrait;
@@ -43,7 +40,7 @@ class AssignCest
 
         $robotPart = new RobotPart();
         $robotPart->assign([
-            'id' => new ObjectId()
+            'id' => new ObjectId(),
         ]);
 
         $I->assertInstanceOf(ObjectId::class, $robotPart->getId('object'));

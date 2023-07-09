@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Phalcon\Incubator\MongoDB\Test\Fixtures\Traits;
 
 use MongoDB\Client;
-use Phalcon\Di;
+use Phalcon\Di\Di;
 use Phalcon\Di\DiInterface;
 use Phalcon\Di\FactoryDefault;
 use Phalcon\Incubator\MongoDB\Mvc\Collection\Manager as CollectionManager;
@@ -65,27 +65,28 @@ trait DiTrait
      */
     protected function setDiMongo()
     {
-        $options = getOptionsMongo();
-
-        if (isset($options['username']) && isset($options['password'])) {
+        if (isset($_ENV['DATA_MONGO_USER']) && isset($_ENV['DATA_MONGO_PASS'])) {
             $dsn = sprintf(
-                'mongodb://%s:%s@%s',
-                $options['username'],
-                $options['password'],
-                $options['host']
+                'mongodb://%s:%s@%s:%d/?authSource=admin',
+                $_ENV['DATA_MONGO_USER'],
+                $_ENV['DATA_MONGO_PASS'],
+                $_ENV['DATA_MONGO_HOST'],
+                $_ENV['DATA_MONGO_PORT'],
             );
         } else {
             $dsn = sprintf(
                 'mongodb://%s',
-                $options['host']
+                $_ENV['DATA_MONGO_HOST'],
             );
         }
+
+        //var_dump($dsn); exit;
 
         $mongo = new Client($dsn);
 
         $this->container->setShared(
             'mongo',
-            $mongo->selectDatabase($options['dbname'])
+            $mongo->selectDatabase($_ENV['DATA_MONGO_NAME'])
         );
     }
 

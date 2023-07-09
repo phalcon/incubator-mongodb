@@ -19,9 +19,6 @@ use Phalcon\Incubator\MongoDB\Test\Fixtures\Mvc\Collections\Documents\RobotPart;
 use Phalcon\Incubator\MongoDB\Test\Fixtures\Mvc\Collections\Robots;
 use Phalcon\Incubator\MongoDB\Test\Fixtures\Traits\DiTrait;
 
-/**
- * Class ReadWriteAttributeCest
- */
 class ReadWriteAttributeCest
 {
     use DiTrait;

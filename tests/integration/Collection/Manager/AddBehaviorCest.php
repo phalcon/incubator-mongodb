@@ -15,9 +15,6 @@ namespace Phalcon\Incubator\MongoDB\Mvc\Test\Integration\Collection\Manager;
 
 use IntegrationTester;
 
-/**
- * Class AddBehaviorCest
- */
 class AddBehaviorCest
 {
     /**
