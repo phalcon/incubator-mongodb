@@ -18,6 +18,7 @@ use MongoDB\Database;
 use Phalcon\Incubator\MongoDB\Mvc\Collection\Exception;
 use Phalcon\Incubator\MongoDB\Test\Fixtures\Mvc\Collections\Robots;
 use Phalcon\Incubator\MongoDB\Test\Fixtures\Traits\DiTrait;
+use Traversable;
 
 class FindCest
 {
@@ -77,7 +78,9 @@ class FindCest
         }
 
         $I->assertNotEmpty($robots);
+        $I->assertInstanceOf(Traversable::class, $robots);
         $I->assertInstanceOf(Robots::class, $result[0]);
+        $I->assertInstanceOf(Traversable::class, $robotsE);
         $I->assertCount(3, $result);
         $I->assertCount(2, $robotsE->toArray());
     }

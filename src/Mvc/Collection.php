@@ -1244,7 +1244,6 @@ class Collection extends AbstractInjectionAware implements
              * Gets the default collectionsManager service
              */
             $manager = $container->getShared("collectionManager");
-
             if ($manager === null) {
                 throw new Exception(
                     "The injected service 'collectionManager' is not valid"
