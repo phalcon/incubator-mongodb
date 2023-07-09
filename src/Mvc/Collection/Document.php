@@ -37,6 +37,8 @@ class Document implements
 
     final public function __construct(array $data = [])
     {
+        $this->helperFactory = new HelperFactory();
+
         /**
          * This allows the developer to execute initialization stuff every time
          * an instance is created
