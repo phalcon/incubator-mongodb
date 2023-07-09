@@ -39,7 +39,7 @@
         "codeception/module-asserts": "^1.0.0",
         "mongodb/mongodb": "^1.6",
         "phpstan/phpstan": "^1.10",
-        "vlucas/phpdotenv": "^2.5"
+        "vlucas/phpdotenv": "^5.5"
     },
     "autoload": {
         "psr-4": {
