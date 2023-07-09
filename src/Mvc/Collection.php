@@ -879,7 +879,7 @@ class Collection extends AbstractInjectionAware implements
      * @return \MongoDB\Collection
      * @throws Exception
      */
-    protected function prepareCU()
+    protected function prepareCU(): \MongoDB\Collection
     {
         if ($this->container === null) {
             throw new Exception('The services related to the ODM');
