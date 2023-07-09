@@ -42,44 +42,41 @@ class Timestampable extends Behavior
         }
 
         $options = $this->getOptions($type);
+        if (!is_array($options)) {
+            return;
+        }
 
-        if (is_array($options)) {
-            $field = $options['field'];
-            $format = $options['format'];
+        /**
+         * The field name is required in this behavior
+         */
+        if (!isset($options['field']) || !is_string($options['field'])) {
+            throw new Exception("The option 'field' is required");
+        }
 
+        $timestamp = null;
+        $field = $options['field'];
+        if (isset($options['format'])) {
             /**
-             * The field name is required in this behavior
+             * Format is a format for date()
              */
-            if (!is_string($field)) {
-                throw new Exception("The option 'field' is required");
-            }
-
-            $timestamp = null;
-
-            if (isset($format)) {
-                /**
-                 * Format is a format for date()
-                 */
-                $timestamp = date($format);
-            } else {
+            $timestamp = date($options['format']);
+        } else {
+            if (isset($options['generator']) && $options['generator'] instanceof Closure) {
                 $generator = $options['generator'];
-
-                if (isset($generator) && is_object($generator) && $generator instanceof Closure) {
-                    $timestamp = $generator();
-                }
+                $timestamp = $generator();
             }
+        }
 
-            if ($timestamp === null) {
-                $timestamp = time();
-            }
+        if ($timestamp === null) {
+            $timestamp = time();
+        }
 
-            if (is_array($field)) {
-                foreach ($field as $singleField) {
-                    $collection->writeAttribute($singleField, $timestamp);
-                }
-            } else {
-                $collection->writeAttribute($field, $timestamp);
+        if (is_array($field)) {
+            foreach ($field as $singleField) {
+                $collection->writeAttribute($singleField, $timestamp);
             }
+        } else {
+            $collection->writeAttribute($field, $timestamp);
         }
     }
 }
