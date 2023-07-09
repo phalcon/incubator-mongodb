@@ -16,6 +16,6 @@ namespace Phalcon\Incubator\MongoDB\Mvc\Collection;
 /**
  * Exceptions thrown in Phalcon\Incubator\MongoDB\Mvc\Collection\* classes will use this class
  */
-class Exception extends \Phalcon\Exception
+class Exception extends \Exception
 {
 }
