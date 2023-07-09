@@ -91,8 +91,6 @@ class Collection extends AbstractInjectionAware implements
 
     protected bool $skipped = false;
 
-    private HelperFactory $helperFactory;
-
     /**
      * @param array $data
      * @param DiInterface|null $container
@@ -113,7 +111,6 @@ class Collection extends AbstractInjectionAware implements
         }
 
         $this->container = $container;
-        $this->helperFactory = new HelperFactory();
 
         if ($collectionsManager === null) {
             $collectionsManager = $container->getShared('collectionsManager');
@@ -1422,7 +1419,7 @@ class Collection extends AbstractInjectionAware implements
 
     final protected function possibleSetter(string $property, $value): bool
     {
-        $possibleSetter = "set" . ucfirst($this->helperFactory->camelize($property));
+        $possibleSetter = "set" . ucfirst((new HelperFactory())->camelize($property));
 
         if (!method_exists($this, $possibleSetter)) {
             return false;
@@ -1441,7 +1438,7 @@ class Collection extends AbstractInjectionAware implements
      */
     final protected function possibleGetter(string $property)
     {
-        $possibleGetter = "get" . ucfirst($this->helperFactory->camelize($property));
+        $possibleGetter = "get" . ucfirst((new HelperFactory())->camelize($property));
 
         if (!method_exists($this, $possibleGetter)) {
             return $this->$property;
