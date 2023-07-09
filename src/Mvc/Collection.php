@@ -20,20 +20,19 @@ use MongoDB\BSON\Serializable as BsonSerializable;
 use MongoDB\BSON\Unserializable;
 use MongoDB\Database;
 use MongoDB\Driver\Cursor;
-use Phalcon\Di;
 use Phalcon\Di\AbstractInjectionAware;
+use Phalcon\Di\Di;
 use Phalcon\Di\DiInterface;
 use Phalcon\Events\ManagerInterface as EventsManagerInterface;
-use Phalcon\Helper\Str;
+use Phalcon\Filter\Validation\ValidationInterface;
 use Phalcon\Incubator\MongoDB\Mvc\Collection\BehaviorInterface;
 use Phalcon\Incubator\MongoDB\Mvc\Collection\Exception;
 use Phalcon\Incubator\MongoDB\Mvc\Collection\ManagerInterface;
 use Phalcon\Messages\Message;
 use Phalcon\Messages\MessageInterface;
 use Phalcon\Mvc\EntityInterface;
-use Phalcon\Validation\ValidationInterface;
+use Phalcon\Support\HelperFactory;
 use ReflectionClass;
-use ReflectionException;
 use Serializable;
 use Traversable;
 
@@ -73,41 +72,35 @@ class Collection extends AbstractInjectionAware implements
      */
     protected $container;
 
-    protected $dirtyState = 1;
+    protected int $dirtyState = 1;
 
-    protected static $disableEvents = false;
+    protected static bool $disableEvents = false;
 
-    /**
-     * @var array $reserved
-     */
-    protected static $reserved;
+    protected static array $reserved = [];
 
-    /**
-     * @var array $typeMap
-     */
-    protected static $typeMap;
+    protected static array $typeMap = [];
 
-    protected $errorMessages = [];
+    protected array $errorMessages = [];
 
     /**
      * @var ManagerInterface|null
      */
     protected $collectionsManager;
 
-    protected $operationMade = 0;
+    protected int $operationMade = 0;
 
-    protected $skipped = false;
+    protected bool $skipped = false;
+
+    private HelperFactory $helperFactory;
 
     /**
-     * Collection constructor.
-     *
-     * @param null $data
+     * @param array $data
      * @param DiInterface|null $container
      * @param ManagerInterface|null $collectionsManager
      * @throws Exception
      */
     final public function __construct(
-        $data = null,
+        array $data = [],
         ?DiInterface $container = null,
         ?ManagerInterface $collectionsManager = null
     ) {
@@ -116,10 +109,11 @@ class Collection extends AbstractInjectionAware implements
         }
 
         if ($container === null) {
-            throw new Exception(Exception::containerServiceNotFound('the services related to the ODM'));
+            throw new Exception('The services related to the ODM');
         }
 
         $this->container = $container;
+        $this->helperFactory = new HelperFactory();
 
         if ($collectionsManager === null) {
             $collectionsManager = $container->getShared('collectionsManager');
@@ -130,16 +124,13 @@ class Collection extends AbstractInjectionAware implements
         }
 
         $this->collectionsManager = $collectionsManager;
-
         $collectionsManager->initialize($this);
 
         if (method_exists($this, 'onConstruct')) {
             $this->onConstruct($data);
         }
 
-        if (is_array($data)) {
-            $this->assign($data);
-        }
+        $this->assign($data);
     }
 
     /**
@@ -185,10 +176,7 @@ class Collection extends AbstractInjectionAware implements
          * Check if a "typeMap" clause was defined or force default
          */
         if (isset($options["typeMap"])) {
-            $options['typeMap'] = array_merge(
-                self::getTypeMap('array'),
-                $options["typeMap"]
-            );
+            $options['typeMap'] = array_merge(self::getTypeMap('array'), $options["typeMap"]);
         } else {
             $options['typeMap'] = self::getTypeMap('array');
         }
@@ -207,9 +195,6 @@ class Collection extends AbstractInjectionAware implements
      */
     public static function cloneResult(CollectionInterface $base, array $data, int $dirtyState = 0): CollectionInterface
     {
-        /**
-         * Clone the base record
-         */
         $collection = clone $base;
 
         /**
@@ -237,12 +222,10 @@ class Collection extends AbstractInjectionAware implements
     public function create(): bool
     {
         $collection = $this->prepareCU();
-
-        $exists = false;
         $this->operationMade = self::OP_CREATE;
         $this->errorMessages = [];
 
-        if ($this->preSave(self::$disableEvents, $exists) === false) {
+        if ($this->preSave(self::$disableEvents, false) === false) {
             return false;
         }
 
@@ -253,18 +236,14 @@ class Collection extends AbstractInjectionAware implements
 
         if ($status->isAcknowledged()) {
             $success = true;
-
-            if ($exists === false) {
-                $this->_id = $status->getInsertedId();
-            }
-
+            $this->_id = $status->getInsertedId();
             $this->dirtyState = self::DIRTY_STATE_PERSISTENT;
         }
 
         return $this->postSave(
             self::$disableEvents,
             $success,
-            $exists
+            false
         );
     }
 
@@ -282,9 +261,7 @@ class Collection extends AbstractInjectionAware implements
          * Check the dirty state of the current operation to update the current
          * operation
          */
-        $exists = $this->exists($collection);
-
-        if (!$exists) {
+        if (!$this->exists($collection)) {
             throw new Exception(
                 "The document cannot be updated because it doesn't exist"
             );
@@ -300,23 +277,19 @@ class Collection extends AbstractInjectionAware implements
         /**
          * Execute the preSave hook
          */
-        if ($this->preSave(self::$disableEvents, $exists) === false) {
+        if ($this->preSave(self::$disableEvents, true) === false) {
             return false;
         }
-
-        $data = $this->toArray();
 
         /**
          * We always use safe stores to get the success state
          * Save the document
          */
-        $status = $collection->updateOne([
-            '_id' => $this->_id
-        ], [
-            '$set' => $data
-        ], [
-            'w' => true
-        ]);
+        $status = $collection->updateOne(
+            ['_id' => $this->_id],
+            ['$set' => $this->toArray()],
+            ['w' => true],
+        );
 
         /**
          * Call the postSave hooks
@@ -324,7 +297,7 @@ class Collection extends AbstractInjectionAware implements
         return $this->postSave(
             self::$disableEvents,
             $status->isAcknowledged(),
-            $exists
+            true
         );
     }
 
@@ -370,11 +343,10 @@ class Collection extends AbstractInjectionAware implements
             $objectId = $this->_id;
         }
 
-        $status = $collection->deleteOne([
-            '_id' => $objectId
-        ], [
-            'w' => true
-        ]);
+        $status = $collection->deleteOne(
+            ['_id' => $objectId],
+            ['w' => true],
+        );
 
         if ($status->getDeletedCount() === 0) {
             return false;
@@ -618,15 +590,13 @@ class Collection extends AbstractInjectionAware implements
         }
 
         if (!$disableEvents) {
-            $eventName = !$exists
-                ? 'afterCreate'
-                : 'afterUpdate';
+            $eventName = !$exists ? 'afterCreate' : 'afterUpdate';
 
             $this->fireEvent($eventName);
             $this->fireEvent("afterSave");
         }
 
-        return $success;
+        return true;
     }
 
     /**
@@ -636,9 +606,7 @@ class Collection extends AbstractInjectionAware implements
     public function save(): bool
     {
         $collection = $this->prepareCU();
-
         $exists = $this->exists($collection);
-
         if ($exists === false) {
             $this->operationMade = self::OP_CREATE;
         } else {
@@ -704,7 +672,6 @@ class Collection extends AbstractInjectionAware implements
     public static function count(array $parameters = []): int
     {
         $className = static::class;
-        /** @var self $collection */
         $collection = new $className();
         $connection = $collection->getConnection();
 
@@ -912,17 +879,16 @@ class Collection extends AbstractInjectionAware implements
     }
 
     /**
-     * @return mixed|\MongoDB\Collection
+     * @return \MongoDB\Collection
      * @throws Exception
      */
     protected function prepareCU()
     {
         if ($this->container === null) {
-            throw new Exception(Exception::containerServiceNotFound('the services related to the ODM'));
+            throw new Exception('The services related to the ODM');
         }
 
         $source = $this->getSource();
-
         if (empty($source)) {
             throw new Exception('Method getSource() returns empty string');
         }
@@ -949,7 +915,7 @@ class Collection extends AbstractInjectionAware implements
         $container = Di::getDefault();
 
         if ($container === null) {
-            throw new Exception(Exception::containerServiceNotFound('the services related to the ODM'));
+            throw new Exception('The services related to the ODM');
         }
 
         $this->container = $container;
@@ -1034,8 +1000,7 @@ class Collection extends AbstractInjectionAware implements
         }
 
         if ($container->has("serializer")) {
-            $serializer = $this->container->getShared("serializer");
-
+            $serializer = $this->container->getShared('serializer');
             $serializer->setData($this->toArray());
 
             return $serializer->serialize();
@@ -1261,11 +1226,7 @@ class Collection extends AbstractInjectionAware implements
          */
         $container = Di::getDefault();
         if ($container === null) {
-            throw new Exception(
-                Exception::containerServiceNotFound(
-                    "the services related to the ODM"
-                )
-            );
+            throw new Exception("The services related to the ODM");
         }
 
         /**
@@ -1417,7 +1378,6 @@ class Collection extends AbstractInjectionAware implements
              * Requesting a single result
              */
             $document = $mongoCollection->findOne($conditions, $parameters);
-
             if (empty($document)) {
                 return null;
             }
@@ -1438,8 +1398,11 @@ class Collection extends AbstractInjectionAware implements
      * @return int
      * @throws Exception
      */
-    protected static function getGroupResultset(array $parameters, CollectionInterface $collection, $connection): int
-    {
+    protected static function getGroupResultset(
+        array $parameters,
+        CollectionInterface $collection,
+        Database $connection
+    ): int {
         $source = $collection->getSource();
         if (empty($source)) {
             throw new Exception("Method getSource() returns empty string");
@@ -1459,7 +1422,7 @@ class Collection extends AbstractInjectionAware implements
 
     final protected function possibleSetter(string $property, $value): bool
     {
-        $possibleSetter = "set" . ucfirst(Str::camelize($property));
+        $possibleSetter = "set" . ucfirst($this->helperFactory->camelize($property));
 
         if (!method_exists($this, $possibleSetter)) {
             return false;
@@ -1478,7 +1441,7 @@ class Collection extends AbstractInjectionAware implements
      */
     final protected function possibleGetter(string $property)
     {
-        $possibleGetter = "get" . ucfirst(Str::camelize($property));
+        $possibleGetter = "get" . ucfirst($this->helperFactory->camelize($property));
 
         if (!method_exists($this, $possibleGetter)) {
             return $this->$property;
@@ -1512,12 +1475,8 @@ class Collection extends AbstractInjectionAware implements
         }
 
         // Use reflection to list uninitialized properties
-        try {
-            $reflection = new ReflectionClass($this);
-            $reflectionProperties = $reflection->getProperties();
-        } catch (ReflectionException $e) {
-            $reflectionProperties = [];
-        }
+        $reflection = new ReflectionClass($this);
+        $reflectionProperties = $reflection->getProperties();
         $reserved = $this->getReservedAttributes();
 
         foreach ($reflectionProperties as $reflectionMethod) {
@@ -1544,7 +1503,7 @@ class Collection extends AbstractInjectionAware implements
     /**
      * @inheritDoc
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         $data = [];
         $reserved = $this->getReservedAttributes();

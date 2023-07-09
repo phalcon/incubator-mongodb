@@ -17,11 +17,10 @@ use ArrayAccess;
 use JsonSerializable;
 use MongoDB\BSON\Serializable;
 use MongoDB\BSON\Unserializable;
-use Phalcon\Helper\Str;
 use Phalcon\Incubator\MongoDB\Mvc\CollectionInterface;
 use Phalcon\Mvc\EntityInterface;
+use Phalcon\Support\HelperFactory;
 use ReflectionClass;
-use ReflectionException;
 
 /**
  * This component allows Phalcon\Incubator\Mvc\Collection to return rows without an associated entity.
@@ -34,12 +33,9 @@ class Document implements
     Serializable,
     JsonSerializable
 {
-    /**
-     * Document constructor.
-     *
-     * @param array $data
-     */
-    final public function __construct($data = null)
+    private HelperFactory $helperFactory;
+
+    final public function __construct(array $data = [])
     {
         /**
          * This allows the developer to execute initialization stuff every time
@@ -49,20 +45,18 @@ class Document implements
             $this->onConstruct($data);
         }
 
-        if (is_array($data)) {
-            $this->assign($data);
-        }
+        $this->assign($data);
     }
 
     /**
      * @param array $data
-     * @param null $dataColumnMap
-     * @param null $whiteList
+     * @param array $dataColumnMap
+     * @param array $whiteList
      * @return $this|CollectionInterface
      */
-    public function assign(array $data, $dataColumnMap = null, $whiteList = null): self
+    public function assign(array $data, array $dataColumnMap = [], array $whiteList = []): self
     {
-        if (is_array($dataColumnMap)) {
+        if (!empty($dataColumnMap)) {
             $dataMapped = [];
 
             foreach ($data as $key => $value) {
@@ -79,18 +73,14 @@ class Document implements
         }
 
         // Use reflection to list uninitialized properties
-        try {
-            $reflection = new ReflectionClass($this);
-            $reflectionProperties = $reflection->getProperties();
-        } catch (ReflectionException $e) {
-            $reflectionProperties = [];
-        }
+        $reflection = new ReflectionClass($this);
+        $reflectionProperties = $reflection->getProperties();
 
         foreach ($reflectionProperties as $reflectionMethod) {
             $key = $reflectionMethod->getName();
 
             if (isset($dataMapped[$key])) {
-                if (is_array($whiteList) && !in_array($key, $whiteList, true)) {
+                if (!in_array($key, $whiteList, true)) {
                     continue;
                 }
 
@@ -106,43 +96,43 @@ class Document implements
     /**
      * Checks whether an offset exists in the document
      *
-     * @param mixed $index
+     * @param mixed $offset
      * @return bool
      */
-    public function offsetExists($index): bool
+    public function offsetExists($offset): bool
     {
-        return isset($this->$index);
+        return isset($this->$offset);
     }
 
     /**
-     * Returns the value of a field using the ArrayAccess interfase
+     * Returns the value of a field using the ArrayAccess interface
      *
-     * @param mixed $index
+     * @param mixed $offset
      * @return mixed|null
      */
-    public function offsetGet($index)
+    public function offsetGet($offset)
     {
-        return $this->$index ?? null;
+        return $this->$offset ?? null;
     }
 
     /**
      * Change a value using the ArrayAccess interface
      *
-     * @param mixed $index
+     * @param mixed $offset
      * @param mixed $value
      */
-    public function offsetSet($index, $value): void
+    public function offsetSet($offset, $value): void
     {
-        $this->$index = $value;
+        $this->$offset = $value;
     }
 
     /**
      * Document cannot be changed. It has only been implemented to meet the definition of the ArrayAccess interface
      *
-     * @param mixed $index
+     * @param mixed $offset
      * @throws Exception
      */
-    public function offsetUnset($index): void
+    public function offsetUnset($offset): void
     {
         throw new Exception("The index does not exist in the document");
     }
@@ -209,8 +199,7 @@ class Document implements
      */
     final protected function possibleGetter(string $property)
     {
-        $possibleGetter = "get" . ucfirst(Str::camelize($property));
-
+        $possibleGetter = "get" . ucfirst($this->helperFactory->camelize($property));
         if (!method_exists($this, $possibleGetter)) {
             return $this->$property;
         }
@@ -233,8 +222,7 @@ class Document implements
      */
     final protected function possibleSetter(string $property, $value): bool
     {
-        $possibleSetter = "set" . ucfirst(Str::camelize($property));
-
+        $possibleSetter = "set" . ucfirst($this->helperFactory->camelize($property));
         if (!method_exists($this, $possibleSetter)) {
             return false;
         }

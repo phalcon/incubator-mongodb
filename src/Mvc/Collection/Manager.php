@@ -20,14 +20,12 @@ use Phalcon\Di\DiInterface;
 use Phalcon\Di\InjectionAwareInterface;
 use Phalcon\Events\EventsAwareInterface;
 use Phalcon\Events\ManagerInterface as EventsManagerInterface;
-use Phalcon\Helper\Str;
 use Phalcon\Incubator\MongoDB\Mvc\CollectionInterface;
-
-use function Phalcon\Incubator\MongoDB\get_class_lower;
-use function Phalcon\Incubator\MongoDB\get_class_ns;
+use Phalcon\Support\HelperFactory;
+use ReflectionClass;
 
 /**
- * This components controls the initialization of collections, keeping record of relations
+ * These components control the initialization of collections, keeping record of relations
  * between the different collections of the application.
  *
  * A CollectionManager is injected to a collection via a Dependency Injector Container such as Phalcon\Di.
@@ -47,30 +45,27 @@ use function Phalcon\Incubator\MongoDB\get_class_ns;
  */
 class Manager implements ManagerInterface, InjectionAwareInterface, EventsAwareInterface
 {
-    protected $container;
+    protected ?DiInterface $container = null;
 
-    protected $eventsManager;
+    protected ?EventsManagerInterface $eventsManager = null;
 
-    protected $initialized = [];
+    protected array $initialized = [];
 
-    protected $sources = [];
+    protected array $sources = [];
 
-    protected $behaviors = null;
+    protected array $behaviors = [];
 
-    protected $prefix = "";
+    protected string $prefix = "";
 
-    protected $serviceName = 'mongo';
+    protected string $serviceName = 'mongo';
 
-    protected $implicitObjectsIds = [];
+    protected array $implicitObjectsIds = [];
 
-    /** @var array|null $connectionServices */
-    protected $connectionServices = null;
+    protected array $connectionServices = [];
 
-    /** @var ManagerInterface|null $customEventsManager */
-    protected $customEventsManager = null;
+    protected array $customEventsManagers = [];
 
-    /** @var CollectionInterface|null $lastInitialized */
-    protected $lastInitialized = null;
+    protected ?CollectionInterface $lastInitialized = null;
 
     /**
      * Sets the DependencyInjector container
@@ -118,7 +113,7 @@ class Manager implements ManagerInterface, InjectionAwareInterface, EventsAwareI
      */
     public function setCollectionSource(CollectionInterface $collection, string $source): void
     {
-        $this->sources[get_class_lower($collection)] = $source;
+        $this->sources[$this->getClassLower($collection)] = $source;
     }
 
     /**
@@ -127,12 +122,14 @@ class Manager implements ManagerInterface, InjectionAwareInterface, EventsAwareI
      */
     public function getCollectionSource(CollectionInterface $collection): string
     {
-        $entityName = get_class_lower($collection);
+        $entityName = $this->getClassLower($collection);
 
         if (!isset($this->sources[$entityName])) {
+            $reflection = new ReflectionClass($collection);
+
             $this->setCollectionSource(
                 $collection,
-                Str::uncamelize(get_class_ns($collection))
+                (new HelperFactory())->uncamelize($reflection->getShortName()),
             );
         }
 
@@ -147,7 +144,7 @@ class Manager implements ManagerInterface, InjectionAwareInterface, EventsAwareI
      */
     public function setCustomEventsManager(CollectionInterface $collection, EventsManagerInterface $eventsManager): void
     {
-        $this->customEventsManager[get_class($collection)] = $eventsManager;
+        $this->customEventsManagers[get_class($collection)] = $eventsManager;
     }
 
     /**
@@ -158,15 +155,9 @@ class Manager implements ManagerInterface, InjectionAwareInterface, EventsAwareI
      */
     public function getCustomEventsManager(CollectionInterface $collection): ?EventsManagerInterface
     {
-        if (is_array($this->customEventsManager)) {
-            $className = get_class_lower($collection);
+        $className = $this->getClassLower($collection);
 
-            if (isset($this->customEventsManager[$className])) {
-                return $this->customEventsManager[$className];
-            }
-        }
-
-        return null;
+        return $this->customEventsManagers[$className] ?? null;
     }
 
     /**
@@ -287,16 +278,13 @@ class Manager implements ManagerInterface, InjectionAwareInterface, EventsAwareI
     public function getConnection(CollectionInterface $collection)
     {
         $service = $this->serviceName;
+        $entityName = get_class($collection);
 
-        if (is_array($this->connectionServices)) {
-            $entityName = get_class($collection);
-
-            /**
-             * Check if the collection has a custom connection service
-             */
-            if (isset($this->connectionServices[$entityName])) {
-                $service = $this->connectionServices[$entityName];
-            }
+        /**
+         * Check if the collection has a custom connection service
+         */
+        if (isset($this->connectionServices[$entityName])) {
+            $service = $this->connectionServices[$entityName];
         }
 
         if ($this->container === null) {
@@ -326,7 +314,7 @@ class Manager implements ManagerInterface, InjectionAwareInterface, EventsAwareI
     {
         $status = null;
 
-        if (is_array($this->behaviors) && isset($this->behaviors[strtolower(get_class($collection))])) {
+        if (isset($this->behaviors[strtolower(get_class($collection))])) {
             /**
              * Notify all the events on the behavior
              */
@@ -349,17 +337,13 @@ class Manager implements ManagerInterface, InjectionAwareInterface, EventsAwareI
         }
 
         /**
-         * A collection can has a specific events manager for it
+         * A collection can have a specific events manager for it
          */
-        if (is_array($this->customEventsManager)) {
-            $customEventsManager = $this->customEventsManager[get_class_lower($collection)];
-
-            if (isset($customEventsManager)) {
-                $status = $customEventsManager->fire("collection:$eventName", $collection);
-
-                if (!$status) {
-                    return $status;
-                }
+        if (isset($this->customEventsManagers[$this->getClassLower($collection)])) {
+            $customEventsManager = $this->customEventsManagers[$this->getClassLower($collection)];
+            $status = $customEventsManager->fire("collection:$eventName", $collection);
+            if (!$status) {
+                return $status;
             }
         }
 
@@ -381,7 +365,7 @@ class Manager implements ManagerInterface, InjectionAwareInterface, EventsAwareI
         /**
          * Dispatch events to the global events manager
          */
-        if (is_array($this->behaviors) && isset($this->behaviors[get_class_lower($collection)])) {
+        if (isset($this->behaviors[$this->getClassLower($collection)])) {
             /**
              * Notify all the events on the behavior
              */
@@ -413,7 +397,7 @@ class Manager implements ManagerInterface, InjectionAwareInterface, EventsAwareI
     public function addBehavior(CollectionInterface $collection, BehaviorInterface $behavior)
     {
         $collectionsBehaviors = [];
-        $entityName = get_class_lower($collection);
+        $entityName = $this->getClassLower($collection);
 
         /**
          * Get the current behaviors
@@ -447,5 +431,14 @@ class Manager implements ManagerInterface, InjectionAwareInterface, EventsAwareI
     public function setServiceName(string $serviceName): void
     {
         $this->serviceName = $serviceName;
+    }
+
+    /**
+     * @param object $object
+     * @return string
+     */
+    private function getClassLower(object $object): string
+    {
+        return strtolower(get_class($object));
     }
 }
