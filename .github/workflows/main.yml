@@ -1,7 +1,14 @@
-name: Testing Suite
-on: [ push, pull_request ]
+name: Tests & Validations
+on: [ push ]
 
 jobs:
+  phpcs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run PHP_CodeSniffer
+        run: docker run --rm -v $(pwd):/data cytopia/phpcs --standard=./phpcs.xml.dist
+
   run-tests:
     name: PHP ${{ matrix.php-versions }} with Phalcon ${{ matrix.phalcon-versions }}
     runs-on: ubuntu-latest
