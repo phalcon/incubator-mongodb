@@ -1,32 +1,32 @@
 actor_suffix: Tester
 
 paths:
-    # where the modules stored
-    tests: tests
-    log: tests/_output
-    # directory for fixture data
-    data: tests/_data
-    # directory for custom modules (helpers)
-    support: tests/_support
-    envs: tests/_envs
+  # where the modules stored
+  tests: tests
+  log: tests/_output
+  # directory for fixture data
+  data: tests/_data
+  # directory for custom modules (helpers)
+  support: tests/_support
+  envs: tests/_envs
 
 settings:
-    colors: true
-    # Tests (especially functional) can take a lot of memory
-    # We set a high limit for them by default.
-    memory_limit: 1024M
-    lint: true
+  colors: true
+  # Tests (especially functional) can take a lot of memory
+  # We set a high limit for them by default.
+  memory_limit: 1024M
+  lint: true
 
 #coverage:
 #    # Disable Code Coverage by default to speed up Travis tests
 #    enabled: false
 
 extensions:
-    enabled:
-        - Codeception\Extension\RunFailed
+  enabled:
+    - Codeception\Extension\RunFailed
 
 bootstrap: _bootstrap.php
 
 params:
-    # get params from environment vars
-    - env
+  # get params from environment vars
+  - env
