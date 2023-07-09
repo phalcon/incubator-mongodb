@@ -20,11 +20,9 @@ use Phalcon\Incubator\MongoDB\Mvc\CollectionInterface;
  */
 abstract class Behavior implements BehaviorInterface
 {
-    protected $options;
+    protected array $options;
 
     /**
-     * Phalcon\Incubator\Mvc\Collection\Behavior
-     *
      * @param array $options
      */
     public function __construct(array $options = [])
