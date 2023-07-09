@@ -65,7 +65,7 @@ trait DiTrait
      */
     protected function setDiMongo()
     {
-        if (isset($_ENV['DATA_MONGO_USER']) && isset($_ENV['DATA_MONGO_PASS'])) {
+        if (!empty($_ENV['DATA_MONGO_USER']) && !empty($_ENV['DATA_MONGO_PASS'])) {
             $dsn = sprintf(
                 'mongodb://%s:%s@%s:%d/?authSource=admin',
                 $_ENV['DATA_MONGO_USER'],
@@ -75,8 +75,9 @@ trait DiTrait
             );
         } else {
             $dsn = sprintf(
-                'mongodb://%s',
+                'mongodb://%s:%d',
                 $_ENV['DATA_MONGO_HOST'],
+                $_ENV['DATA_MONGO_PORT'],
             );
         }
 
