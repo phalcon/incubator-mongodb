@@ -17,7 +17,7 @@ jobs:
       key: cache-${{ matrix.phalcon-versions }}-${{ matrix.php-versions }}
     services:
       mongodb:
-        image: mongo:4.2
+        image: mongo
         ports:
           - 27017:27017
     strategy:
