@@ -26,7 +26,7 @@ class SetDICest
      * @author Phalcon Team <team@phalcon.io>
      * @since  2018-11-13
      */
-    public function mvcCollectionManagerSetDI(IntegrationTester $I)
+    public function mvcCollectionsManagerSetDI(IntegrationTester $I)
     {
         $I->wantToTest('Mvc\Collection\Manager - setDI()');
     }

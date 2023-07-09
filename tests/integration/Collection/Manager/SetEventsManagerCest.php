@@ -26,7 +26,7 @@ class SetEventsManagerCest
      * @author Phalcon Team <team@phalcon.io>
      * @since  2018-11-13
      */
-    public function mvcCollectionManagerSetEventsManager(IntegrationTester $I)
+    public function mvcCollectionsManagerSetEventsManager(IntegrationTester $I)
     {
         $I->wantToTest('Mvc\Collection\Manager - setEventsManager()');
     }

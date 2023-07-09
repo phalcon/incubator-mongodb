@@ -18,29 +18,29 @@ use Phalcon\Incubator\MongoDB\Mvc\Collection\ManagerInterface;
 use Phalcon\Incubator\MongoDB\Test\Fixtures\Mvc\Collections\Robots;
 use Phalcon\Incubator\MongoDB\Test\Fixtures\Traits\DiTrait;
 
-class GetCollectionManagerCest
+class GetCollectionsManagerCest
 {
     use DiTrait;
 
     public function _before()
     {
         $this->setNewFactoryDefault();
-        $this->setDiCollectionManager();
+        $this->setDiCollectionsManager();
         $this->setDiMongo();
     }
 
     /**
-     * Tests Phalcon\Mvc\Collection :: getCollectionManager()
+     * Tests Phalcon\Mvc\Collection :: getCollectionsManager()
      *
      * @param IntegrationTester $I
      * @since  2018-11-13
      * @author Phalcon Team <team@phalcon.io>
      */
-    public function mvcCollectionGetCollectionManager(IntegrationTester $I)
+    public function mvcCollectionGetCollectionsManager(IntegrationTester $I)
     {
-        $I->wantToTest('Mvc\Collection - getCollectionManager()');
+        $I->wantToTest('Mvc\Collection - getCollectionsManager()');
 
         $robot = new Robots();
-        $I->assertTrue(is_subclass_of($robot->getCollectionManager(), ManagerInterface::class));
+        $I->assertTrue(is_subclass_of($robot->getCollectionsManager(), ManagerInterface::class));
     }
 }

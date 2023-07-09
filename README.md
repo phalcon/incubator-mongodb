@@ -31,7 +31,7 @@ Manager controls the initialization of collections, keeping record of relations 
 use Phalcon\Incubator\MongoDB\Mvc\Collection\Manager;
 
 $di->set(
-    'collectionManager',
+    'collectionsManager',
     function () {
         return new Manager();
     }
@@ -72,60 +72,52 @@ $robots = RobotsCollection::find();
 echo "There are ", count($robots), "\n";
 
 // How many mechanical robots are there?
-$robots = RobotsCollection::find(
- [
-     [
-         "type" => "mechanical",
-     ],
- ]
-);
+$robots = RobotsCollection::find([
+    [
+        "type" => "mechanical",
+    ],
+]);
 
 echo "There are ", count(robots), "\n";
 
 // Get and print virtual robots ordered by name
-$robots = RobotsCollection::findFirst(
- [
-     [
-         "type" => "virtual"
-     ],
-     "order" => [
-         "name" => 1,
-     ],
- ]
-);
+$robots = RobotsCollection::findFirst([
+    [
+        "type" => "virtual",
+    ],
+    "order" => [
+        "name" => 1,
+    ],
+]);
 
 foreach ($robots as $robot) {
-   echo $robot->name, "\n";
+    echo $robot->name, "\n";
 }
 
 // Get first 100 virtual robots ordered by name
-$robots = RobotsCollection::find(
- [
-     [
-         "type" => "virtual",
-     ],
-     "order" => [
-         "name" => 1,
-     ],
-     "limit" => 100,
- ]
-);
+$robots = RobotsCollection::find([
+    [
+        "type" => "virtual",
+    ],
+    "order" => [
+        "name" => 1,
+    ],
+    "limit" => 100,
+]);
 
 foreach (RobotsCollection as $robot) {
-   echo $robot->name, "\n";
+    echo $robot->name, "\n";
 }
 
-$robot = RobotsCollection::findFirst(
- [
-     [
-         "_id" => new ObjectId("45cbc4a0e4123f6920000002"),
-     ],
- ]
-);
+$robot = RobotsCollection::findFirst([
+    [
+        "_id" => new ObjectId("45cbc4a0e4123f6920000002"),
+    ],
+]);
 
 // Find robot by using \MongoDB\BSON\ObjectId object
 $robot = RobotsCollection::findById(
- new ObjectId("545eb081631d16153a293a66")
+    new ObjectId("545eb081631d16153a293a66")
 );
 
 // Find robot by using id as sting
@@ -133,7 +125,7 @@ $robot = RobotsCollection::findById("45cbc4a0e4123f6920000002");
 
 // Validate input
 if ($robot = RobotsCollection::findById($_POST["id"])) {
- // ...
+    // ...
 }
 ```
 

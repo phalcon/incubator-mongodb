@@ -17,7 +17,7 @@ use MongoDB\Client;
 use Phalcon\Di\Di;
 use Phalcon\Di\DiInterface;
 use Phalcon\Di\FactoryDefault;
-use Phalcon\Incubator\MongoDB\Mvc\Collection\Manager as CollectionManager;
+use Phalcon\Incubator\MongoDB\Mvc\Collection\Manager as CollectionsManager;
 
 trait DiTrait
 {
@@ -53,11 +53,11 @@ trait DiTrait
     }
 
     /**
-     * Setup a new Collection Manager
+     * Set up a new Collection Manager
      */
-    protected function setDiCollectionManager()
+    protected function setDiCollectionsManager()
     {
-        $this->container->setShared('collectionsManager', CollectionManager::class);
+        $this->container->setShared('collectionsManager', CollectionsManager::class);
     }
 
     /**

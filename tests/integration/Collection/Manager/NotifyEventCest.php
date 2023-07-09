@@ -26,7 +26,7 @@ class NotifyEventCest
      * @author Phalcon Team <team@phalcon.io>
      * @since  2018-11-13
      */
-    public function mvcCollectionManagerNotifyEvent(IntegrationTester $I)
+    public function mvcCollectionsManagerNotifyEvent(IntegrationTester $I)
     {
         $I->wantToTest('Mvc\Collection\Manager - notifyEvent()');
     }

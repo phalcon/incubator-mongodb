@@ -23,7 +23,7 @@ class GetConnectionServiceCest
      * @author Phalcon Team <team@phalcon.io>
      * @since  2018-11-13
      */
-    public function mvcCollectionManagerGetConnectionService(IntegrationTester $I)
+    public function mvcCollectionsManagerGetConnectionService(IntegrationTester $I)
     {
         $I->wantToTest('Mvc\Collection\Manager - getConnectionService()');
     }

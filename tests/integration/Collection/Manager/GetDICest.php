@@ -23,7 +23,7 @@ class GetDICest
      * @author Phalcon Team <team@phalcon.io>
      * @since  2018-11-13
      */
-    public function mvcCollectionManagerGetDI(IntegrationTester $I)
+    public function mvcCollectionsManagerGetDI(IntegrationTester $I)
     {
         $I->wantToTest('Mvc\Collection\Manager - getDI()');
     }

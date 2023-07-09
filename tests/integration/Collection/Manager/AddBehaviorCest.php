@@ -23,7 +23,7 @@ class AddBehaviorCest
      * @author Phalcon Team <team@phalcon.io>
      * @since  2018-11-13
      */
-    public function mvcCollectionManagerAddBehavior(IntegrationTester $I)
+    public function mvcCollectionsManagerAddBehavior(IntegrationTester $I)
     {
         $I->wantToTest('Mvc\Collection\Manager - addBehavior()');
     }

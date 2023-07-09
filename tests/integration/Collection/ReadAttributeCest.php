@@ -32,7 +32,7 @@ class ReadAttributeCest
     public function _before()
     {
         $this->setNewFactoryDefault();
-        $this->setDiCollectionManager();
+        $this->setDiCollectionsManager();
         $this->setDiMongo();
 
         $this->source = (new Robots)->getSource();

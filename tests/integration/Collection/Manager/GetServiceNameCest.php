@@ -26,7 +26,7 @@ class GetServiceNameCest
      * @author Phalcon Team <team@phalcon.io>
      * @since  2018-11-13
      */
-    public function mvcCollectionManagerGetServiceName(IntegrationTester $I)
+    public function mvcCollectionsManagerGetServiceName(IntegrationTester $I)
     {
         $I->wantToTest('Mvc\Collection\Manager - getServiceName()');
     }

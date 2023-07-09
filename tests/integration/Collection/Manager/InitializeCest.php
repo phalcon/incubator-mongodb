@@ -26,7 +26,7 @@ class InitializeCest
      * @author Phalcon Team <team@phalcon.io>
      * @since  2018-11-13
      */
-    public function mvcCollectionManagerInitialize(IntegrationTester $I)
+    public function mvcCollectionsManagerInitialize(IntegrationTester $I)
     {
         $I->wantToTest('Mvc\Collection\Manager - initialize()');
     }

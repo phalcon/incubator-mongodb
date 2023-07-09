@@ -23,7 +23,7 @@ class GetLastInitializedCest
      * @author Phalcon Team <team@phalcon.io>
      * @since  2018-11-13
      */
-    public function mvcCollectionManagerGetLastInitialized(IntegrationTester $I)
+    public function mvcCollectionsManagerGetLastInitialized(IntegrationTester $I)
     {
         $I->wantToTest('Mvc\Collection\Manager - getLastInitialized()');
     }

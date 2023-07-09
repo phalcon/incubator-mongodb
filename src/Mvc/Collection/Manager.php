@@ -28,13 +28,13 @@ use ReflectionClass;
  * These components control the initialization of collections, keeping record of relations
  * between the different collections of the application.
  *
- * A CollectionManager is injected to a collection via a Dependency Injector Container such as Phalcon\Di.
+ * A CollectionsManager is injected to a collection via a Dependency Injector Container such as Phalcon\Di.
  *
  * <code>
  * $di = new \Phalcon\Di();
  *
  * $di->set(
- *     "collectionManager",
+ *     "collectionsManager",
  *     function () {
  *         return new \Phalcon\Incubator\MongoDB\Mvc\Collection\Manager();
  *     }
@@ -181,7 +181,7 @@ class Manager implements ManagerInterface, InjectionAwareInterface, EventsAwareI
              * If an EventsManager is available we pass to it every initialized collection
              */
             if (is_object($this->eventsManager)) {
-                $this->eventsManager->fire('collectionManager:afterInitialize', $collection);
+                $this->eventsManager->fire('collectionsManager:afterInitialize', $collection);
             }
 
             $this->initialized[$className] = $collection;

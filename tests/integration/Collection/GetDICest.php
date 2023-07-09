@@ -24,7 +24,7 @@ class GetDICest
     public function _before()
     {
         $this->setNewFactoryDefault();
-        $this->setDiCollectionManager();
+        $this->setDiCollectionsManager();
         $this->setDiMongo();
     }
 

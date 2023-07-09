@@ -26,7 +26,7 @@ class IsInitializedCest
      * @author Phalcon Team <team@phalcon.io>
      * @since  2018-11-13
      */
-    public function mvcCollectionManagerIsInitialized(IntegrationTester $I)
+    public function mvcCollectionsManagerIsInitialized(IntegrationTester $I)
     {
         $I->wantToTest('Mvc\Collection\Manager - isInitialized()');
     }

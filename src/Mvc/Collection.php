@@ -849,7 +849,7 @@ class Collection extends AbstractInjectionAware implements
             $className = static::class;
             $collection = new $className();
 
-            if ($collection->getCollectionManager()->isUsingImplicitObjectIds($collection)) {
+            if ($collection->getCollectionsManager()->isUsingImplicitObjectIds($collection)) {
                 $objectId = new ObjectId($id);
             } else {
                 $objectId = $id;
@@ -870,7 +870,7 @@ class Collection extends AbstractInjectionAware implements
      *
      * @return ManagerInterface
      */
-    public function getCollectionManager(): ManagerInterface
+    public function getCollectionsManager(): ManagerInterface
     {
         return $this->collectionsManager;
     }
@@ -1243,10 +1243,10 @@ class Collection extends AbstractInjectionAware implements
             /**
              * Gets the default collectionsManager service
              */
-            $manager = $container->getShared("collectionManager");
+            $manager = $container->getShared('collectionsManager');
             if ($manager === null) {
                 throw new Exception(
-                    "The injected service 'collectionManager' is not valid"
+                    "The injected service 'collectionsManager' is not valid"
                 );
             }
 

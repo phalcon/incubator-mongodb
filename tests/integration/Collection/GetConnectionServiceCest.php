@@ -24,7 +24,7 @@ class GetConnectionServiceCest
     public function _before()
     {
         $this->setNewFactoryDefault();
-        $this->setDiCollectionManager();
+        $this->setDiCollectionsManager();
         $this->setDiMongo();
 
         $mongo = $this->getDi()->get('mongo');

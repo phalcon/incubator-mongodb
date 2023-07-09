@@ -26,7 +26,7 @@ class UseImplicitObjectIdsCest
      * @author Phalcon Team <team@phalcon.io>
      * @since  2018-11-13
      */
-    public function mvcCollectionManagerUseImplicitObjectIds(IntegrationTester $I)
+    public function mvcCollectionsManagerUseImplicitObjectIds(IntegrationTester $I)
     {
         $I->wantToTest('Mvc\Collection\Manager - useImplicitObjectIds()');
     }
