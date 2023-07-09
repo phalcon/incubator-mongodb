@@ -52,7 +52,7 @@ class OffsetArrayAccessCest
 
         $parts = [
             'id' => $robot->getId(),
-            'common_name' => $robot->first_name . ' ' . $robot->last_name
+            'common_name' => $robot->first_name . ' ' . $robot->last_name,
         ];
 
         $robotPart = new RobotPart($parts);

@@ -15,24 +15,19 @@ namespace Phalcon\Incubator\MongoDB\Mvc\Test\Integration\Collection;
 
 use IntegrationTester;
 use MongoDB\Database;
+use Phalcon\Incubator\MongoDB\Mvc\Collection\Exception;
 use Phalcon\Incubator\MongoDB\Test\Fixtures\Mvc\Collections\Robots;
 use Phalcon\Incubator\MongoDB\Test\Fixtures\Traits\DiTrait;
 
-/**
- * Class ReadAttributeCest
- */
 class ReadAttributeCest
 {
     use DiTrait;
 
-    /** @var string $source */
-    private $source;
+    private string $source;
 
-    /** @var Database $mongo */
-    private $mongo;
+    private Database $mongo;
 
-    /** @var string $first_name */
-    private $first_name = 'Unknown';
+    private string $first_name = 'Unknown';
 
     public function _before()
     {
@@ -55,6 +50,7 @@ class ReadAttributeCest
      * Tests Phalcon\Mvc\Collection :: readAttribute()
      *
      * @param IntegrationTester $I
+     * @throws Exception
      * @since  2018-11-13
      * @author Phalcon Team <team@phalcon.io>
      */

@@ -15,21 +15,18 @@ namespace Phalcon\Incubator\MongoDB\Mvc\Test\Integration\Collection;
 
 use IntegrationTester;
 use MongoDB\Database;
+use Phalcon\Incubator\MongoDB\Mvc\Collection;
+use Phalcon\Incubator\MongoDB\Mvc\Collection\Exception;
 use Phalcon\Incubator\MongoDB\Test\Fixtures\Mvc\Collections\Robots;
 use Phalcon\Incubator\MongoDB\Test\Fixtures\Traits\DiTrait;
 
-/**
- * Class GetSetDirtyStateCest
- */
 class GetSetDirtyStateCest
 {
     use DiTrait;
 
-    /** @var string $source */
-    private $source;
+    private string $source;
 
-    /** @var Database $mongo */
-    private $mongo;
+    private Database $mongo;
 
     public function _before()
     {
@@ -37,7 +34,7 @@ class GetSetDirtyStateCest
         $this->setDiCollectionManager();
         $this->setDiMongo();
 
-        $this->source = (new Robots)->getSource();
+        $this->source = (new Robots())->getSource();
         $this->mongo = $this->getDi()->get('mongo');
     }
 
@@ -46,6 +43,7 @@ class GetSetDirtyStateCest
      * Tests Phalcon\Mvc\Collection :: setDirtyState()
      *
      * @param IntegrationTester $I
+     * @throws Exception
      * @since  2018-11-13
      * @author Phalcon Team <team@phalcon.io>
      */
@@ -54,18 +52,18 @@ class GetSetDirtyStateCest
         $I->wantToTest('Mvc\Collection - getDirtyState()');
         $I->wantToTest('Mvc\Collection - setDirtyState()');
 
-        $robot = new Robots;
-        $I->assertEquals(Robots::DIRTY_STATE_TRANSIENT, $robot->getDirtyState());
+        $robot = new Robots();
+        $I->assertEquals(Collection::DIRTY_STATE_TRANSIENT, $robot->getDirtyState());
 
         $robot->first_name = "wall";
         $I->assertTrue($robot->save());
-        $I->assertEquals(Robots::DIRTY_STATE_PERSISTENT, $robot->getDirtyState());
+        $I->assertEquals(Collection::DIRTY_STATE_PERSISTENT, $robot->getDirtyState());
 
         $I->assertTrue($robot->delete());
-        $I->assertEquals(Robots::DIRTY_STATE_DETACHED, $robot->getDirtyState());
+        $I->assertEquals(Collection::DIRTY_STATE_DETACHED, $robot->getDirtyState());
 
-        $robot->setDirtyState(Robots::DIRTY_STATE_TRANSIENT);
-        $I->assertEquals(Robots::DIRTY_STATE_TRANSIENT, $robot->getDirtyState());
+        $robot->setDirtyState(Collection::DIRTY_STATE_TRANSIENT);
+        $I->assertEquals(Collection::DIRTY_STATE_TRANSIENT, $robot->getDirtyState());
     }
 
     public function _after()

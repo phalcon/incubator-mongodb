@@ -39,10 +39,10 @@ class WriteAttributeCest
     {
         $I->wantToTest('Mvc\Collection - writeAttribute()');
 
-        $robot = new Robots;
-        $first_name = 'Hola';
-        $robot->writeAttribute('first_name', $first_name);
+        $firstName = 'Hola';
+        $robot = new Robots();
+        $robot->writeAttribute('first_name', $firstName);
 
-        $I->assertEquals($first_name, $robot->first_name);
+        $I->assertEquals($firstName, $robot->first_name);
     }
 }

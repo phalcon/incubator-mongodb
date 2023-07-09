@@ -18,26 +18,20 @@ use IntegrationTester;
 use MongoDB\BSON\ObjectId;
 use MongoDB\BSON\UTCDateTime;
 use MongoDB\Database;
+use Phalcon\Incubator\MongoDB\Mvc\Collection\Exception;
 use Phalcon\Incubator\MongoDB\Test\Fixtures\Mvc\Collections\Documents\RobotPart;
 use Phalcon\Incubator\MongoDB\Test\Fixtures\Mvc\Collections\Robots;
-use Phalcon\Incubator\MongoDB\Test\Fixtures\Mvc\Collections\Robots2;
 use Phalcon\Incubator\MongoDB\Test\Fixtures\Traits\DiTrait;
 
-/**
- * Class JsonSerializeCest
- */
 class JsonSerializeCest
 {
     use DiTrait;
 
-    /** @var string $source */
-    private $source;
+    private string $source;
 
-    /** @var Database $mongo */
-    private $mongo;
+    private Database $mongo;
 
-    /** @var array $data */
-    private $data;
+    private array $data;
 
     public function _before()
     {
@@ -58,15 +52,15 @@ class JsonSerializeCest
             'last_name' => 'Nobody',
             'sub' => [
                 'bool' => false,
-                'float' => 0.02
+                'float' => 0.02,
             ],
             'sub2' => [
                 'id' => new ObjectId(),
-                'date' => new UTCDateTime(1595061104 * 1000)
+                'date' => new UTCDateTime(1595061104 * 1000),
             ],
             'rbpart' => $rbpart,
             'version' => 1,
-            'protected_field' => 10
+            'protected_field' => 10,
         ];
 
         $insertOneResult = $this->mongo->selectCollection($this->source)->insertOne($this->data);
@@ -77,6 +71,7 @@ class JsonSerializeCest
      * Tests Phalcon\Mvc\Collection :: toArray()
      *
      * @param IntegrationTester $I
+     * @throws Exception
      * @since  2018-11-13
      * @author Phalcon Team <team@phalcon.io>
      */

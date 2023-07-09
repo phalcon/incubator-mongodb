@@ -17,9 +17,6 @@ use IntegrationTester;
 use Phalcon\Incubator\MongoDB\Test\Fixtures\Mvc\Collections\Robots;
 use Phalcon\Incubator\MongoDB\Test\Fixtures\Traits\DiTrait;
 
-/**
- * Class GetSourceCest
- */
 class GetSourceCest
 {
     use DiTrait;

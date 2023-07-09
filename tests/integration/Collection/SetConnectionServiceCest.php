@@ -15,21 +15,17 @@ namespace Phalcon\Incubator\MongoDB\Mvc\Test\Integration\Collection;
 
 use IntegrationTester;
 use MongoDB\Database;
+use Phalcon\Incubator\MongoDB\Mvc\Collection\Exception;
 use Phalcon\Incubator\MongoDB\Test\Fixtures\Mvc\Collections\Robots;
 use Phalcon\Incubator\MongoDB\Test\Fixtures\Traits\DiTrait;
 
-/**
- * Class SetConnectionServiceCest
- */
 class SetConnectionServiceCest
 {
     use DiTrait;
 
-    /** @var string $source */
-    private $source;
+    private string $source;
 
-    /** @var Database $mongo */
-    private $mongo;
+    private Database $mongo;
 
     public function _before()
     {
@@ -37,7 +33,7 @@ class SetConnectionServiceCest
         $this->setDiCollectionManager();
         $this->setDiMongo();
 
-        $this->source = (new Robots)->getSource();
+        $this->source = (new Robots())->getSource();
         $this->mongo = $this->getDi()->get('mongo');
         $this->getDi()->setShared('otherMongo', $this->mongo);
     }
@@ -46,6 +42,7 @@ class SetConnectionServiceCest
      * Tests Phalcon\Mvc\Collection :: setConnectionService()
      *
      * @param IntegrationTester $I
+     * @throws Exception
      * @since  2018-11-13
      * @author Phalcon Team <team@phalcon.io>
      */

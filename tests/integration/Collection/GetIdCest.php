@@ -16,23 +16,21 @@ namespace Phalcon\Incubator\MongoDB\Mvc\Test\Integration\Collection;
 use IntegrationTester;
 use MongoDB\Database;
 use MongoDB\InsertOneResult;
+use Phalcon\Incubator\MongoDB\Mvc\Collection\Exception;
 use Phalcon\Incubator\MongoDB\Test\Fixtures\Mvc\Collections\Robots;
 use Phalcon\Incubator\MongoDB\Test\Fixtures\Traits\DiTrait;
 
-/**
- * Class GetIdCest
- */
 class GetIdCest
 {
     use DiTrait;
 
-    /** @var string $source */
-    private $source;
+    private string $source;
 
-    /** @var Database $mongo */
-    private $mongo;
+    private Database $mongo;
 
-    /** @var mixed $id */
+    /**
+     * @var mixed
+     */
     private $id;
 
     public function _before()
@@ -59,6 +57,7 @@ class GetIdCest
      * Tests Phalcon\Mvc\Collection :: getId()
      *
      * @param IntegrationTester $I
+     * @throws Exception
      * @since  2018-11-13
      * @author Phalcon Team <team@phalcon.io>
      */

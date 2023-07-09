@@ -14,13 +14,11 @@ declare(strict_types=1);
 namespace Phalcon\Incubator\MongoDB\Mvc\Test\Integration\Collection;
 
 use IntegrationTester;
+use Phalcon\Incubator\MongoDB\Mvc\Collection\Exception;
 use Phalcon\Messages\MessageInterface;
 use Phalcon\Incubator\MongoDB\Test\Fixtures\Mvc\Collections\Robots;
 use Phalcon\Incubator\MongoDB\Test\Fixtures\Traits\DiTrait;
 
-/**
- * Class AppendMessageCest
- */
 class AppendMessageCest
 {
     use DiTrait;
@@ -36,6 +34,7 @@ class AppendMessageCest
      * Tests Phalcon\Mvc\Collection :: appendMessage()
      *
      * @param IntegrationTester $I
+     * @throws Exception
      * @since  2018-11-13
      * @author Phalcon Team <team@phalcon.io>
      */

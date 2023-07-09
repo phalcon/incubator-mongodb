@@ -15,24 +15,19 @@ namespace Phalcon\Incubator\MongoDB\Mvc\Test\Integration\Collection;
 
 use IntegrationTester;
 use MongoDB\Database;
+use Phalcon\Incubator\MongoDB\Mvc\Collection\Exception;
 use Phalcon\Incubator\MongoDB\Test\Fixtures\Mvc\Collections\Robots;
 use Phalcon\Incubator\MongoDB\Test\Fixtures\Traits\DiTrait;
 
-/**
- * Class ToArrayCest
- */
 class ToArrayCest
 {
     use DiTrait;
 
-    /** @var string $source */
-    private $source;
+    private string $source;
 
-    /** @var Database $mongo */
-    private $mongo;
+    private Database $mongo;
 
-    /** @var array $data */
-    private $data;
+    private array $data;
 
     public function _before()
     {
@@ -48,11 +43,11 @@ class ToArrayCest
             'last_name' => 'Nobody',
             'sub' => [
                 'bool' => false,
-                'float' => 0.02
+                'float' => 0.02,
             ],
             'version' => 1,
             'rbpart' => null,
-            'protected_field' => 10
+            'protected_field' => 10,
         ];
 
         $insertOneResult = $this->mongo->selectCollection($this->source)->insertOne($this->data);
@@ -63,6 +58,7 @@ class ToArrayCest
      * Tests Phalcon\Mvc\Collection :: toArray()
      *
      * @param IntegrationTester $I
+     * @throws Exception
      * @since  2018-11-13
      * @author Phalcon Team <team@phalcon.io>
      */

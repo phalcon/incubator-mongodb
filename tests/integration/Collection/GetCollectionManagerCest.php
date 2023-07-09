@@ -18,9 +18,6 @@ use Phalcon\Incubator\MongoDB\Mvc\Collection\ManagerInterface;
 use Phalcon\Incubator\MongoDB\Test\Fixtures\Mvc\Collections\Robots;
 use Phalcon\Incubator\MongoDB\Test\Fixtures\Traits\DiTrait;
 
-/**
- * Class GetCollectionManagerCest
- */
 class GetCollectionManagerCest
 {
     use DiTrait;

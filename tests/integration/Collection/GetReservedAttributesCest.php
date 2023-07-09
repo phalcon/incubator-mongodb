@@ -18,9 +18,6 @@ use MongoDB\BSON\ObjectId;
 use Phalcon\Incubator\MongoDB\Test\Fixtures\Mvc\Collections\Robots;
 use Phalcon\Incubator\MongoDB\Test\Fixtures\Traits\DiTrait;
 
-/**
- * Class GetReservedAttributesCest
- */
 class GetReservedAttributesCest
 {
     use DiTrait;

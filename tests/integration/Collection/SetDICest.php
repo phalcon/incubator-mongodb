@@ -20,9 +20,6 @@ use Phalcon\Incubator\MongoDB\Test\Fixtures\Mvc\Collections\Robots;
 use Phalcon\Incubator\MongoDB\Test\Fixtures\Traits\DiTrait;
 use stdClass;
 
-/**
- * Class SetDICest
- */
 class SetDICest
 {
     use DiTrait;
@@ -51,7 +48,7 @@ class SetDICest
 
         $di = new Di();
         $di->set('std', new stdClass);
-        $robot = new Robots;
+        $robot = new Robots();
         $robot->setDI($di);
 
         $I->assertInstanceOf(stdClass::class, $robot->getDI()->get('std'));

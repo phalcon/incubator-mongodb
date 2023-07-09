@@ -41,7 +41,7 @@ class JsonSerializeCest
         $parts = [
             'id' => new ObjectId(),
             'date' => null,
-            'common_name' => 'Henry'
+            'common_name' => 'Henry',
         ];
 
         $robotPart = new RobotPart($parts);

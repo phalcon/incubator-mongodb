@@ -15,9 +15,6 @@ namespace Phalcon\Incubator\MongoDB\Mvc\Test\Integration\Collection\Behavior;
 
 use IntegrationTester;
 
-/**
- * Class MissingMethodCest
- */
 class MissingMethodCest
 {
     /**

@@ -15,9 +15,6 @@ namespace Phalcon\Incubator\MongoDB\Mvc\Test\Integration\Collection;
 
 use IntegrationTester;
 
-/**
- * Class FireEventCest
- */
 class FireEventCest
 {
     /**

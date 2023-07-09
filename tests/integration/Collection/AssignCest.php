@@ -18,9 +18,6 @@ use Phalcon\Incubator\MongoDB\Test\Fixtures\Mvc\Collections\Robots;
 use Phalcon\Incubator\MongoDB\Test\Fixtures\Mvc\Collections\SuperRobots;
 use Phalcon\Incubator\MongoDB\Test\Fixtures\Traits\DiTrait;
 
-/**
- * Class AssignCest
- */
 class AssignCest
 {
     use DiTrait;

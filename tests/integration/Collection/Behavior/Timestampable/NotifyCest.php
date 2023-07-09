@@ -15,9 +15,6 @@ namespace Phalcon\Incubator\MongoDB\Mvc\Test\Integration\Collection\Behavior\Tim
 
 use IntegrationTester;
 
-/**
- * Class NotifyCest
- */
 class NotifyCest
 {
     /**

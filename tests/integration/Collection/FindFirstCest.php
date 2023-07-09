@@ -18,9 +18,6 @@ use MongoDB\Database;
 use Phalcon\Incubator\MongoDB\Test\Fixtures\Mvc\Collections\Robots;
 use Phalcon\Incubator\MongoDB\Test\Fixtures\Traits\DiTrait;
 
-/**
- * Class FindFirstCest
- */
 class FindFirstCest
 {
     use DiTrait;

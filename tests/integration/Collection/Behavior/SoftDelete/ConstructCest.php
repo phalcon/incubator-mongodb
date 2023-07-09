@@ -15,9 +15,6 @@ namespace Phalcon\Incubator\MongoDB\Mvc\Test\Integration\Collection\Behavior\Sof
 
 use IntegrationTester;
 
-/**
- * Class ConstructCest
- */
 class ConstructCest
 {
     /**

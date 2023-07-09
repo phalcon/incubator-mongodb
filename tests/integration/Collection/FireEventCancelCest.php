@@ -15,9 +15,6 @@ namespace Phalcon\Incubator\MongoDB\Mvc\Test\Integration\Collection;
 
 use IntegrationTester;
 
-/**
- * Class FireEventCancelCest
- */
 class FireEventCancelCest
 {
     /**
@@ -30,5 +27,5 @@ class FireEventCancelCest
     public function mvcCollectionFireEventCancel(IntegrationTester $I)
     {
         $I->wantToTest('Mvc\Collection - fireEventCancel()');
-}
+    }
 }
