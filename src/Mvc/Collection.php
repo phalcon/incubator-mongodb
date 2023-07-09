@@ -879,7 +879,7 @@ class Collection extends AbstractInjectionAware implements
      * @return \MongoDB\Collection
      * @throws Exception
      */
-    protected function prepareCU()
+    protected function prepareCU(): \MongoDB\Collection
     {
         if ($this->container === null) {
             throw new Exception('The services related to the ODM');
@@ -1015,7 +1015,7 @@ class Collection extends AbstractInjectionAware implements
      * @param string $connectionService
      * @return $this
      */
-    public function setConnectionService($connectionService): self
+    public function setConnectionService(string $connectionService): self
     {
         $this->collectionsManager->setConnectionService($this, $connectionService);
 
@@ -1182,7 +1182,7 @@ class Collection extends AbstractInjectionAware implements
         ];
 
         /** @noinspection NotOptimalIfConditionsInspection */
-        if (class_exists($base) && is_array($base::$typeMap)) {
+        if (class_exists($base)) {
             $typeMap = array_merge($typeMap, $base::$typeMap);
         }
 
@@ -1244,7 +1244,6 @@ class Collection extends AbstractInjectionAware implements
              * Gets the default collectionsManager service
              */
             $manager = $container->getShared("collectionManager");
-
             if ($manager === null) {
                 throw new Exception(
                     "The injected service 'collectionManager' is not valid"

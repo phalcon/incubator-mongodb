@@ -19,6 +19,7 @@ use MongoDB\Driver\Cursor;
 use Phalcon\Incubator\MongoDB\Mvc\Collection\Exception;
 use Phalcon\Incubator\MongoDB\Test\Fixtures\Mvc\Collections\Robots;
 use Phalcon\Incubator\MongoDB\Test\Fixtures\Traits\DiTrait;
+use Traversable;
 
 class AggregateCest
 {
@@ -69,12 +70,13 @@ class AggregateCest
         $robots1 = Robots::aggregate([
             [
                 '$match' => [
-                    'first_name' => 'Wall'
+                    'first_name' => 'Wall',
                 ]
             ]
         ]);
 
         $I->assertInstanceOf(Cursor::class, $robots1);
+        $I->assertInstanceOf(Traversable::class, $robots1);
 
         foreach ($robots1 as $rb) {
             $I->assertIsArray($rb);
