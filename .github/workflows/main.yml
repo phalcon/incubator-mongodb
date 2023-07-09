@@ -2,12 +2,27 @@ name: Tests & Validations
 on: [ push ]
 
 jobs:
-  phpcs:
+  validations:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Run PHP_CodeSniffer
-        run: docker run --rm -v $(pwd):/data cytopia/phpcs --standard=./phpcs.xml.dist
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+          extensions: mbstring, intl, json, mongodb-1.16.0, phalcon, xdebug
+          tools: pecl
+          ini-values: apc.enable_cli=on, session.save_path=/tmp
+
+      - run: composer install --no-interaction --no-ansi --no-progress
+
+      - name: run psalm
+        if: always()
+        run: vendor/bin/psalm
+
+      - name: run phpcs
+        run: vendor/bin/phpcs
 
   run-tests:
     name: PHP ${{ matrix.php-versions }} with Phalcon ${{ matrix.phalcon-versions }}
@@ -27,6 +42,7 @@ jobs:
         phalcon-versions: [ '5.0.0', '5.0.1', '5.0.2', '5.0.3', '5.0.4', '5.0.5', '5.1.0', '5.1.1', '5.1.2', '5.1.3', '5.1.4', '5.2.0', '5.2.1', '5.2.2' ]
     steps:
       - uses: actions/checkout@v3
+
       - name: Setup cache environment
         id: cache-env
         uses: shivammathur/cache-extensions@v1
