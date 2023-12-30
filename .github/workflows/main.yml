@@ -11,7 +11,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '7.4'
-          extensions: mbstring, intl, json, mongodb-1.16.0, phalcon, xdebug
+          extensions: mbstring, intl, json, mongodb, phalcon, xdebug
           tools: pecl
           ini-values: apc.enable_cli=on, session.save_path=/tmp
 
@@ -28,7 +28,7 @@ jobs:
     name: PHP ${{ matrix.php-versions }} with Phalcon ${{ matrix.phalcon-versions }}
     runs-on: ubuntu-latest
     env:
-      extensions: mbstring, intl, json, mongodb-1.16.0, phalcon-${{ matrix.phalcon-versions }}, xdebug
+      extensions: mbstring, intl, json, mongodb, phalcon-${{ matrix.phalcon-versions }}, xdebug
       key: cache-${{ matrix.phalcon-versions }}-${{ matrix.php-versions }}
     services:
       mongodb:
