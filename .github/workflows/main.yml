@@ -11,7 +11,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '7.4'
-          extensions: mbstring, intl, json, mongodb, phalcon, xdebug
+          extensions: mbstring, intl, json, mongodb, phalcon-5.4.0, xdebug
           tools: pecl
           ini-values: apc.enable_cli=on, session.save_path=/tmp
 
