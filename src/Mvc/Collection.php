@@ -1516,4 +1516,14 @@ class Collection extends AbstractInjectionAware implements
 
         return $data;
     }
+
+    public function __serialize(): array
+    {
+        return $this->toArray();
+    }
+
+    public function __unserialize(array $data): void
+    {
+        $this->assign($data);
+    }
 }
