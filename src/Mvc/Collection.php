@@ -427,6 +427,8 @@ class Collection extends AbstractInjectionAware implements
             } else {
                 $this->_id = $id;
             }
+        } else {
+            $this->_id = $id;
         }
     }
 
